@@ -1,0 +1,48 @@
+.SelectArea {
+  display: flex;
+}
+
+#SearchForm {
+  flex: 1;
+  margin: 10px;
+  height: 50px;
+}
+
+#SearchForm input {
+  margin-right: 10px;
+  width: 80%;
+  height: 90%;
+  font-size: 100%;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;  
+}
+  
+#SearchForm button {
+  height: 100%;
+  margin-right: 10px;
+  font-size: 100%;
+  background-color: #FFA101;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+#SearchForm button:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+
+#SearchForm .OptionButton {
+  height: 100%;
+  margin-right: 10px;
+  font-size: 100%;
+  background-color: gray;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+#SearchForm .OptionButton:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}

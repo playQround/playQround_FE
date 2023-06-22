@@ -1,0 +1,28 @@
+.OptionArea {
+    display: flex;
+    height: 50px;
+    margin: 14px;
+    border-radius: 5px;
+}
+
+.Option {
+    width: 33%;
+    margin: auto;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Option select {
+    width: 30%;
+    height: 80%;
+    border-radius: 5px;
+}
+
+.Option input {
+    width: 30%;
+    height: 80%;
+    font-size: 100%;
+    border-radius: 5px;
+    border: 1px solid black;
+    text-align: right;
+}

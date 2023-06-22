@@ -1,0 +1,21 @@
+/* .UserOptionArea{
+    display: flex;
+} */
+
+.SignButton {
+    width: 80%;
+    height : 50px;
+    margin-top: 50px;
+    color: whitesmoke;
+    font-size: 100%;
+    border-radius: 10px ;
+    background-color: #0A62D0;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.SignButton:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    font-weight: bold;
+}

@@ -1,0 +1,22 @@
+.QuizzesRoomArea {
+    display: grid;
+    /* height: 400px; */
+    grid-template-columns: repeat(4, 1fr);
+    overflow: auto;
+}
+
+.QuizRoom {
+    margin: 20px;
+    height: 125px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid whitesmoke;
+    background-color: #F3D849;
+    transition: transform 0.3s ease;
+}
+
+.QuizRoom:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    font-weight: bold;
+}
