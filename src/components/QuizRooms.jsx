@@ -1,5 +1,6 @@
 import '../css/QuizRoom.css'
 
+
 const EachRoom = ({name, status, now, max}) => {
     const RoomEntrance = () => {
         alert("입장을 시도합니다.")
@@ -14,59 +15,17 @@ const EachRoom = ({name, status, now, max}) => {
     )
 }
 
-const QuizRooms = () => {
-
-    const quizRoom = [{
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    },
-    {
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    },
-    {
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    },
-    {
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    },
-    {
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    },  {
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    }, {
-        roomName : "초보만",
-        roomStatus : 'waiting',
-        nowPeople : 1,
-        maxPeople : 8
-    }]
-
+const QuizRooms = ({quizRoom}) => {
     return (
         <div className='QuizzesRoomArea'>
-            { quizRoom.map((item,index) => {
+            {quizRoom.map((item,index) => {
                 return <EachRoom
                             key={index}
                             name={item.roomName}
                             status={item.roomStatus}
                             now = {item.nowPeople}
                             max = {item.maxPeople}/>
-            }) }
+            })}
         </div>
         
     )

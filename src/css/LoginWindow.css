@@ -1,0 +1,57 @@
+.LoginMain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LoginContent {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 30%;
+    height: 45%;
+}
+
+.LoginContent form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.LoginBox input {
+    width: 60%;
+    height: 40px;
+    margin-top: 10px
+}
+
+.LoginContent button {
+    width: 61%;
+    height: 40px;
+    margin-top: 10px;
+    font-weight: bold;
+    border: none;
+}
+
+.LoginContent .Submit {
+    background-color: #0A62D0;
+    color: whitesmoke;
+}
+
+.LoginContent .SignIn {
+    background-color: #7843e6;
+    color: whitesmoke;
+}
+
+.LoginContent .Cancel {
+    background-color: red;
+    color: whitesmoke;
+}

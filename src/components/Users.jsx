@@ -1,18 +1,18 @@
 import '../css/Users.css'
 
-const Users = () => {
+const Users = ({ViewLogin}) => {
+    
     const UserSignIn = () => {
-        alert('로그인을 시도합니다');
+        alert('');
     }
-
+    
     const UserSignUp = () => {
         alert('회원가입을 시도합니다');
     }
-
+    
     return (
         <div className="UserOptionArea"> 
-            
-            <button className="SignButton" onClick={UserSignIn}>
+            <button className="SignButton" onClick={ViewLogin}>
                 Sign In
             </button>
             

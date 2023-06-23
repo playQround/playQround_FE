@@ -1,25 +1,34 @@
 import "./App.css";
+import { useState } from "react";
+
 
 import SelectArea from "./components/SelectArea";
-import QuizRooms from "./components/QuizRooms";
 import ChatArea from "./components/ChatArea";
 import Users from "./components/Users";
+import LoginWindow from "./components/LoginWindow";
 
 function App() {
+  const [loginView, setLoginView] = useState(false);
+  
+  const ViewLogin = () => {
+    const newLoginView = loginView ? false : true;
+    setLoginView(newLoginView);
+  }
+
   return (
     <div className="App">
+      { loginView ? <LoginWindow ViewLogin={ViewLogin}/>  : '' }
+
       <header className="Logo"></header>
       <div className="Main">
 
         <div className="Area1">
-          {/* <h1> Quizzes Room List </h1> */}
           <SelectArea/>
-          <QuizRooms/>
           <ChatArea/>
         </div>
 
         <div className="Area2">
-          <Users/>
+          <Users ViewLogin={ViewLogin}/>
         </div>
 
       </div>
