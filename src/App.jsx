@@ -8,19 +8,19 @@ import Users from "./components/Users";
 function App() {
   return (
     <div className="App">
-      <header className="Logo"> img file in here</header>
+      <header className="Logo"></header>
       <div className="Main">
 
-        <td className="Area1">
-          <h1> Quizzes Room List </h1>
+        <div className="Area1">
+          {/* <h1> Quizzes Room List </h1> */}
           <SelectArea/>
           <QuizRooms/>
           <ChatArea/>
-        </td>
+        </div>
 
-        <td className="Area2">
+        <div className="Area2">
           <Users/>
-        </td>
+        </div>
 
       </div>
     </div>

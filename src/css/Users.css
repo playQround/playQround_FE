@@ -8,9 +8,10 @@
     margin-top: 50px;
     color: whitesmoke;
     font-size: 100%;
+    font-weight: bold;
     border-radius: 10px ;
-    background-color: #0A62D0;
-    border: none;
+    background-color: #7843e6;
+    border: 3px solid whitesmoke;
     transition: transform 0.3s ease;
 }
 

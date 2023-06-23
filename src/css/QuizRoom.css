@@ -1,17 +1,25 @@
 .QuizzesRoomArea {
     display: grid;
     /* height: 400px; */
+    width: 85%;
+    margin: auto;
+    justify-content: center;
     grid-template-columns: repeat(4, 1fr);
     overflow: auto;
 }
 
 .QuizRoom {
+    display: flex;
+    flex-direction: column;
     margin: 20px;
     height: 125px;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
     border-radius: 10px;
     border: 1px solid whitesmoke;
-    background-color: #F3D849;
+    background-color: whitesmoke;
     transition: transform 0.3s ease;
 }
 
@@ -19,4 +27,14 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
     font-weight: bold;
+}
+
+p {
+    text-align: center;
+    margin: 0px;
+}
+
+.RoomStatus {
+    color: #0A62D0;
+    font-size: 30px;
 }

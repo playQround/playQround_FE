@@ -1,28 +1,54 @@
 .OptionArea {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 60%;
     height: 50px;
-    margin: 14px;
+    margin: auto;
     border-radius: 5px;
 }
 
 .Option {
-    width: 33%;
     margin: auto;
+    width: 200px;
+    height: 30px;
+    vertical-align: middle;
+    font-size: 15px;
     font-weight: bold;
+    color: whitesmoke;
     text-align: center;
+    border-radius: 5px;
+    background-color: #7843e6;
 }
 
 .Option select {
-    width: 30%;
-    height: 80%;
-    border-radius: 5px;
+    width: 60%;
+    height: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+    text-align: center;
+    color: whitesmoke;
+    background-color: #7843e6;
+    border: none;
+    outline: none;
 }
 
+
+
 .Option input {
-    width: 30%;
     height: 80%;
-    font-size: 100%;
-    border-radius: 5px;
-    border: 1px solid black;
+    width: 50%;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: whitesmoke;
+    background-color: #7843e6;
+    border: none;
     text-align: right;
+    outline: none;
+}
+
+input::-webkit-inner-spin-button{
+    appearance: none;
 }

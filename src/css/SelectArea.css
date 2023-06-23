@@ -1,5 +1,6 @@
 .SelectArea {
   display: flex;
+  margin: auto;
 }
 
 #SearchForm {
@@ -10,21 +11,23 @@
 
 #SearchForm input {
   margin-right: 10px;
-  width: 80%;
+  width: 63%;
   height: 90%;
   font-size: 100%;
   text-align: center;
-  border: 1px solid black;
+  border: none;
   border-radius: 5px;  
 }
   
 #SearchForm button {
   height: 100%;
   margin-right: 10px;
+  width: 80px;
   font-size: 100%;
-  background-color: #FFA101;
-  border: none;
-  color: white;
+  font-weight: bold;
+  background-color: #FFE180 ;
+  border: 3px solid whitesmoke;
+  color: black;
   border-radius: 5px;
 }
 
@@ -32,14 +35,14 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-
 #SearchForm .OptionButton {
   height: 100%;
   margin-right: 10px;
+  width: 80px;
   font-size: 100%;
-  background-color: gray;
-  border: none;
   color: white;
+  background-color: gray;
+  border: 3px solid whitesmoke;
   border-radius: 5px;
 }
 

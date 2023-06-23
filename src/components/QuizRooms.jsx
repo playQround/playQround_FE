@@ -7,9 +7,9 @@ const EachRoom = ({name, status, now, max}) => {
 
     return (
         <div className='QuizRoom'  onClick={RoomEntrance}>
-            <p> {name} </p>
-            <p> {status} </p>
-            <p> {now} / {max} </p>
+            <p className='RoomName'> {name} </p>
+            <p className='RoomStatus'> {status} </p>
+            <p className='RoomPeople'> {now} / {max} </p>
         </div>
     )
 }
@@ -59,8 +59,9 @@ const QuizRooms = () => {
 
     return (
         <div className='QuizzesRoomArea'>
-            { quizRoom.map((item) => {
+            { quizRoom.map((item,index) => {
                 return <EachRoom
+                            key={index}
                             name={item.roomName}
                             status={item.roomStatus}
                             now = {item.nowPeople}
