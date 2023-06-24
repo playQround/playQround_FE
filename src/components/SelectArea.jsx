@@ -50,11 +50,10 @@ const SearchArea = () => {
 
     useEffect(() => {axios.get('http://localhost:3000/api/rooms')
                             .then(response => {
-                                console.log('reset')
                                 setQuizRoom(response.data.rooms);
                             })
                             .catch(error => {
-                                console.log(error);
+                                alert(error);
                             })
                     }, [])
 

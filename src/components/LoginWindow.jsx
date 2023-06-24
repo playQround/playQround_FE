@@ -4,11 +4,11 @@ const LoginWindow = ({ViewLogin}) => {
     return (
         <div className="LoginMain">
             <div className="LoginContent">
-                <h1> Sign In </h1>
+                <h2> Sign In </h2>
 
                 <form className='LoginBox'>
                     <input type='text' placeholder='E-mail'/>
-                    <input type='text' placeholder='Password'/>
+                    <input type='password' placeholder='Password'/>
                     <button className='Submit'> Submit </button>
                 </form>
 
