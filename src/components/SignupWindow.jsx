@@ -26,7 +26,7 @@ const SignupWindow = ({ViewSignup}) => {
         setPassword2(event.target.value);
     }
 
-    const TrySignup = () => {
+    const TrySignup = (event) => {
         const data = {
             userEmail : email,
             userName : name,
