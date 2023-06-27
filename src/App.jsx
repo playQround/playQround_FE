@@ -9,6 +9,7 @@ import Users from "./components/Users";
 import LoginWindow from "./components/LoginWindow";
 import SignupWindow from "./components/SignupWindow";
 import LoginUsers from "./components/LoginUsers";
+import axios from "axios";
 
 function App() {
   const [loginView, setLoginView] = useState(false);
@@ -24,6 +25,11 @@ function App() {
   }
 
   const cookieStatus = cookie.load('authorization');
+  if (cookieStatus) {
+    axios.get('http://localhost:3000/api/users/info')
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
 
   return (
     <div className="App">
