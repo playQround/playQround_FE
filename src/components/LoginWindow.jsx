@@ -24,7 +24,7 @@ const LoginWindow = ({ViewLogin}) => {
 
         axios.post('http://localhost:3000/api/auth/signin', data)
             .then(response => {
-                cookie.save('authorization', response.data.token);
+                cookie.save('authorization', 'Bearer ' + response.data.token);
                 alert(response.data.message);
                 window.location.reload();
             })
