@@ -26,7 +26,7 @@ const LoginWindow = ({ViewLogin}) => {
             .then(response => {
                 cookie.save('authorization', response.data.token);
                 alert(response.data.message);
-                window.location.reload();
+                ViewLogin();
             })
             .catch(error => {
                 event.preventDefault();
