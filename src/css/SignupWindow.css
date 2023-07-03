@@ -1,4 +1,4 @@
-.SignupMain {
+.SignUpMain {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-.SignupContent {
+.SignUpContent {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -20,20 +20,20 @@
     height: 90%;
 }
 
-.SignupContent form {
+.SignUpContent form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.SignupBox input {
+.SignUpBox input {
     width: 60%;
     height: 40px;
     margin-top: 10px
 }
 
-.SignupContent button {
+.SignUpContent button {
     width: 61%;
     height: 40px;
     margin-top: 10px;
@@ -41,17 +41,17 @@
     border: none;
 }
 
-.SignupContent .Submit {
+.SignUpContent .Submit {
     background-color: #0A62D0;
     color: whitesmoke;
 }
 
-.SignupContent .SignIn {
+.SignUpContent .SignIn {
     background-color: #7843e6;
     color: whitesmoke;
 }
 
-.SignupContent .Cancel {
+.SignUpContent .Cancel {
     background-color: red;
     color: whitesmoke;
 }
