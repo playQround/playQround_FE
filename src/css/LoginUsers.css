@@ -1,0 +1,29 @@
+.LoginUserArea {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.UserInfoArea p {
+    margin-top: 20px;
+}
+
+.LoginUserArea button {
+    width: 80%;
+    height: 50px;
+    margin: auto;
+    margin-top: 20px;
+    color: whitesmoke;
+    font-size: 100%;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: #7843e6;
+    border: 3px solid whitesmoke;
+    transition: transform 0.3s ease;
+}
+
+.LoginUserArea button:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    font-weight: bold;
+}

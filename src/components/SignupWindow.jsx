@@ -27,6 +27,7 @@ const SignupWindow = ({ViewSignup}) => {
     }
 
     const TrySignup = (event) => {
+        event.preventDefault();
         const data = {
             userEmail : email,
             userName : name,

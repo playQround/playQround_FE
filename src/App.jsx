@@ -1,35 +1,55 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import cookie from 'react-cookies';
 
 import SelectArea from "./components/SelectArea";
 import ChatArea from "./components/ChatArea";
 import Users from "./components/Users";
+import LoginUsers from "./components/LoginUsers";
+
 import LoginWindow from "./components/LoginWindow";
 import SignupWindow from "./components/SignupWindow";
-import LoginUsers from "./components/LoginUsers";
+import CreateRoomWindow from "./components/CreateRoomWindow";
+
+import axios from "axios";
 
 function App() {
   const [loginView, setLoginView] = useState(false);
   const ViewLogin = () => {
-    const newLoginView = loginView ? false : true;
-    setLoginView(newLoginView);
+    setLoginView(!loginView);
   }
 
-  const [signupView, setSignupView] = useState(false)
+  const [signupView, setSignupView] = useState(false);
   const ViewSignup = () => {
-    const newViewSignup = signupView ? false : true;
-    setSignupView(newViewSignup);
+    setSignupView(!signupView);
   }
 
-  const cookieStatus = cookie.load('authorization');
+  const [createRoomView, setCreateRoomView] = useState(false);
+  const ViewCreateRoom = () => {
+    setCreateRoomView(!createRoomView);
+  }
+
+  const [userInfo, setUserInfo] = useState({});
+
+  const cookieStatus = useMemo(() => {
+    return cookie.load('authorization');
+  }, []);
+
+  if (cookieStatus) {
+      axios.get('http://localhost:3000/api/users/info', {
+        headers : {'authorization': cookieStatus}
+      })
+        .then(response => setUserInfo(response.data))
+        .catch(error => alert(error))
+    }
 
   return (
     <div className="App">
       
       { loginView ? <LoginWindow ViewLogin={ViewLogin}/>  : '' }
       { signupView ? <SignupWindow ViewSignup={ViewSignup}/>  : '' }
+      { createRoomView ? <CreateRoomWindow ViewCreateRoom={ViewCreateRoom}/> : ''}
 
       <header className="Logo"></header>
       <div className="Main">
@@ -40,7 +60,7 @@ function App() {
         </div>
 
         <div className="Area2">
-          { cookieStatus ? <LoginUsers/>
+          { cookieStatus ? <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom}/>
             : <Users ViewLogin={ViewLogin} ViewSignup={ViewSignup}/>}
           
         </div>
