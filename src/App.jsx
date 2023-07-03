@@ -1,73 +1,58 @@
 import "./App.css";
 import { useState, useMemo } from "react";
-
-import cookie from 'react-cookies';
-
+import cookie from "react-cookies";
 import SelectArea from "./components/SelectArea";
 import ChatArea from "./components/ChatArea";
 import Users from "./components/Users";
 import LoginUsers from "./components/LoginUsers";
-
 import LoginWindow from "./components/LoginWindow";
-import SignupWindow from "./components/SignupWindow";
+import SignUpWindow from "./components/SignUpWindow";
 import CreateRoomWindow from "./components/CreateRoomWindow";
-
-import axios from "axios";
+import { decodeJwt } from "jose";
 
 function App() {
-  const [loginView, setLoginView] = useState(false);
-  const ViewLogin = () => {
-    setLoginView(!loginView);
-  }
+    // login popup state control
+    const [loginView, setLoginView] = useState(false);
+    const ViewLogin = () => setLoginView(!loginView);
 
-  const [signupView, setSignupView] = useState(false);
-  const ViewSignup = () => {
-    setSignupView(!signupView);
-  }
+    // signUp popup state control
+    const [SignUpView, setSignUpView] = useState(false);
+    const ViewSignUp = () => setSignUpView(!SignUpView);
 
-  const [createRoomView, setCreateRoomView] = useState(false);
-  const ViewCreateRoom = () => {
-    setCreateRoomView(!createRoomView);
-  }
+    // create Room popup state control
+    const [createRoomView, setCreateRoomView] = useState(false);
+    const ViewCreateRoom = () => setCreateRoomView(!createRoomView);
 
-  const [userInfo, setUserInfo] = useState({});
+    // read cookie to check login or not
+    const user = cookie.load("authorization");
+    const userInfo = user
+        ? decodeJwt(user)
+        : { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
+    console.log("name", userInfo);
 
-  const cookieStatus = useMemo(() => {
-    return cookie.load('authorization');
-  }, []);
+    return (
+        <div className="App">
+            {loginView ? <LoginWindow ViewLogin={ViewLogin} /> : ""}
+            {SignUpView ? <SignUpWindow ViewSignUp={ViewSignUp} /> : ""}
+            {createRoomView ? <CreateRoomWindow ViewCreateRoom={ViewCreateRoom} /> : ""}
 
-  if (cookieStatus) {
-      axios.get('http://localhost:3000/api/users/info', {
-        headers : {'authorization': cookieStatus}
-      })
-        .then(response => setUserInfo(response.data))
-        .catch(error => alert(error))
-    }
+            <header className="Logo"></header>
+            <div className="Main">
+                <div className="Area1">
+                    <SelectArea />
+                    <ChatArea />
+                </div>
 
-  return (
-    <div className="App">
-      
-      { loginView ? <LoginWindow ViewLogin={ViewLogin}/>  : '' }
-      { signupView ? <SignupWindow ViewSignup={ViewSignup}/>  : '' }
-      { createRoomView ? <CreateRoomWindow ViewCreateRoom={ViewCreateRoom}/> : ''}
-
-      <header className="Logo"></header>
-      <div className="Main">
-
-        <div className="Area1">
-          <SelectArea/>
-          <ChatArea/>
+                <div className="Area2">
+                    {user ? (
+                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom} />
+                    ) : (
+                        <Users ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} />
+                    )}
+                </div>
+            </div>
         </div>
-
-        <div className="Area2">
-          { cookieStatus ? <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom}/>
-            : <Users ViewLogin={ViewLogin} ViewSignup={ViewSignup}/>}
-          
-        </div>
-
-      </div>
-    </div>
-  );
+    );
 }
 
 export default App;

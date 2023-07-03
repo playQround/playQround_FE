@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import '../css/SignupWindow.css'
+import '../css/SignUpWindow.css'
 import PasswordChecker from './PasswordChecker';
 import PasswordChecker2 from './PasswordChecker2';
 
-const SignupWindow = ({ViewSignup}) => {
+const SignUpWindow = ({ViewSignUp}) => {
 
     const [email, setEmail] = useState('');
     const ChangeEmail = (event) => {
@@ -26,14 +26,14 @@ const SignupWindow = ({ViewSignup}) => {
         setPassword2(event.target.value);
     }
 
-    const TrySignup = (event) => {
+    const TrySignUp = (event) => {
         event.preventDefault();
         const data = {
             userEmail : email,
             userName : name,
             userPassword : password,
         }
-        axios.post('http://localhost:3000/api/users/signup', data)
+        axios.post('http://localhost:3000/api/users/Signup', data)
             .then(response => {
                 console.log(data)   
                 alert(response.data.message)})
@@ -41,11 +41,11 @@ const SignupWindow = ({ViewSignup}) => {
     }   
 
     return (
-        <div className="SignupMain">
-            <div className="SignupContent">
+        <div className="SignUpMain">
+            <div className="SignUpContent">
                 <h2> Sign Up </h2>
 
-                <form className='SignupBox' onSubmit={TrySignup}>
+                <form className='SignUpBox' onSubmit={TrySignUp}>
                     <input type='text' placeholder='E-mail' value={email} onChange={ChangeEmail}/>
 
                     <input type='text' placeholder='userName' value={name} onChange={ChangeName}/>
@@ -59,10 +59,10 @@ const SignupWindow = ({ViewSignup}) => {
                     <button className='Submit'> Submit </button>
                 </form>
 
-                <button className='Cancel' onClick={ViewSignup}> Cancel </button>
+                <button className='Cancel' onClick={ViewSignUp}> Cancel </button>
             </div>
         </div>
     )
 }
 
-export default SignupWindow;
+export default SignUpWindow;
