@@ -1,13 +1,13 @@
 import '../css/Users.css'
 
-const Users = ({ViewLogin, ViewSignup}) => {
+const Users = ({ViewLogin, ViewSignUp}) => {
     return (
         <div className="UserOptionArea"> 
             <button className="SignButton" onClick={ViewLogin}>
                 Sign In
             </button>
             
-            <button className="SignButton" onClick={ViewSignup}>
+            <button className="SignButton" onClick={ViewSignUp}>
                 Sign Up
             </button>
             
