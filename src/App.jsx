@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import cookie from "react-cookies";
 import SelectArea from "./components/SelectArea";
 import ChatArea from "./components/ChatArea";
@@ -9,6 +9,7 @@ import LoginWindow from "./components/LoginWindow";
 import SignUpWindow from "./components/SignUpWindow";
 import CreateRoomWindow from "./components/CreateRoomWindow";
 import { decodeJwt } from "jose";
+import { API } from "./Api";
 
 function App() {
     // login popup state control
@@ -29,6 +30,10 @@ function App() {
         ? decodeJwt(user)
         : { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
     console.log("name", userInfo);
+
+    API.getUserInfo({ Authorization: cookie.load("authorization") })
+        .then((res) => console.log("result", res))
+        .catch((error) => console.log("error", error));
 
     return (
         <div className="App">
