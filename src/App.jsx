@@ -9,12 +9,13 @@ import SignUpWindow from "./components/SignUpWindow";
 import CreateRoomWindow from "./components/CreateRoomWindow";
 import { decodeJwt } from "jose";
 import { io } from "socket.io-client";
+import { API } from "./Api";
 
 function App() {
     // socket control
     const [socket, setSocket] = useState();
     useEffect(() => {
-        const socketIo = io("api.playqround.site");
+        const socketIo = io(process.env.REACT_APP_SERVER_URL);
         setSocket(socketIo);
     }, []);
     useEffect(() => {
@@ -43,6 +44,10 @@ function App() {
         ? decodeJwt(user)
         : { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
     console.log("name", userInfo);
+
+    API.getUserInfo({ Authorization: cookie.load("authorization") })
+        .then((res) => console.log("result", res))
+        .catch((error) => console.log("error", error));
 
     return (
         <div className="App">

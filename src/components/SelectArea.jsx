@@ -1,16 +1,14 @@
+import "../css/SelectArea.css";
 import { useState, useEffect } from "react";
 import OptionArea from "./OptionArea";
 import QuizRooms from "./QuizRooms";
-import "../css/SelectArea.css";
-import axios from "axios";
-import ChatArea from "./ChatArea";
+import { API } from "../Api";
 
-const SearchArea = ({ userInfo, socket }) => {
+const SearchArea = () => {
     const SearchStart = () => {
-        axios
-            .get(
-                `http://localhost:3000/api/rooms/search?roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
-            )
+        API.searchRooms(
+            `roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
+        )
             .then((response) => setQuizRoom(response.data.rooms))
             .catch((error) => alert(error));
     };
@@ -35,13 +33,12 @@ const SearchArea = ({ userInfo, socket }) => {
     // 하위 컴포넌트 전달 - QuizRooms
     const [quizRoom, setQuizRoom] = useState([]);
 
-    // 방 입장을 위한 선택 방 정보 state
+
     const [selectedRoom, setSelectedRoom] = useState("");
     console.log("selected room name:", selectedRoom);
 
     useEffect(() => {
-        axios
-            .get("http://localhost:80/api/rooms")
+        API.getRooms()
             .then((response) => {
                 setQuizRoom(response.data.rooms);
             })
@@ -84,6 +81,7 @@ const SearchArea = ({ userInfo, socket }) => {
             ) : (
                 <QuizRooms quizRoom={quizRoom} setSelectedRoom={setSelectedRoom} />
             )}
+
         </div>
     );
 };

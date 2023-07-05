@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import axios from 'axios';
 import '../css/SignUpWindow.css'
+import { useState } from 'react';
 import PasswordChecker from './PasswordChecker';
 import PasswordChecker2 from './PasswordChecker2';
+import { API } from '../Api';
 
 const SignUpWindow = ({ViewSignUp}) => {
 
@@ -33,7 +33,7 @@ const SignUpWindow = ({ViewSignUp}) => {
             userName : name,
             userPassword : password,
         }
-        axios.post('http://localhost:3000/api/users/Signup', data)
+        API.signUp(data)
             .then(response => {
                 console.log(data)   
                 alert(response.data.message)})
