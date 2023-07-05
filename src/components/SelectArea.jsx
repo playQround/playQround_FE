@@ -2,9 +2,10 @@ import "../css/SelectArea.css";
 import { useState, useEffect } from "react";
 import OptionArea from "./OptionArea";
 import QuizRooms from "./QuizRooms";
+import ChatArea from "./ChatArea";
 import { API } from "../Api";
 
-const SearchArea = () => {
+const SearchArea = ({userInfo, socket}) => {
     const SearchStart = () => {
         API.searchRooms(
             `roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
