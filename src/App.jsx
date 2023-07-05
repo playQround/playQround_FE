@@ -1,16 +1,30 @@
 import "./App.css";
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import cookie from "react-cookies";
 import SelectArea from "./components/SelectArea";
-import ChatArea from "./components/ChatArea";
 import Users from "./components/Users";
 import LoginUsers from "./components/LoginUsers";
 import LoginWindow from "./components/LoginWindow";
 import SignUpWindow from "./components/SignUpWindow";
 import CreateRoomWindow from "./components/CreateRoomWindow";
 import { decodeJwt } from "jose";
+import { io } from "socket.io-client";
 
 function App() {
+    // socket control
+    const [socket, setSocket] = useState();
+    useEffect(() => {
+        const socketIo = io("api.playqround.site");
+        setSocket(socketIo);
+    }, []);
+    useEffect(() => {
+        return () => {
+            if (socket) {
+                socket.disconnect();
+            }
+        };
+    });
+
     // login popup state control
     const [loginView, setLoginView] = useState(false);
     const ViewLogin = () => setLoginView(!loginView);
@@ -39,8 +53,7 @@ function App() {
             <header className="Logo"></header>
             <div className="Main">
                 <div className="Area1">
-                    <SelectArea />
-                    <ChatArea />
+                    <SelectArea userInfo={userInfo} socket={socket} />
                 </div>
 
                 <div className="Area2">
