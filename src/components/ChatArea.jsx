@@ -96,8 +96,9 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                 nickname,
             });
         };
-        socket.on("participant", (newParticipant) => {
-            setParticipant([...participant, newParticipant]);
+        socket.on("participant", (data) => {
+            const newParticipant = JSON.parse(data);
+            setParticipant([...newParticipant]);
             console.log("new participant:", newParticipant);
         });
         socket.on("startQuiz", () => setStartQuiz(!startQuiz));
@@ -144,7 +145,9 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                         <div className="col-75 text-center">
                             <div>
                                 <h2 id="question" className="">
-                                    {readyTime ? readyTime : quiz.question}
+                                    {readyTime
+                                        ? readyTime
+                                        : quiz.question + "(" + quiz?.answer.length + "글자)"}
                                 </h2>
                             </div>
                         </div>
@@ -208,8 +211,26 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                             </form>
                         </div>
                         <div className="col-25 border-left">
-                            <h3 className="text-center">참여자 목록</h3>
-                            <ul id="participant-list" className="list-group list-group-flush"></ul>
+                            <ul id="participant-list" className="participant-window">
+                                <h3 className="text-center">참여자 목록</h3>
+                                {participant.map((item, index) => {
+                                    if (startQuiz) {
+                                        return (
+                                            <div key={index} className="participant-list">
+                                                <span className="participant">
+                                                    {item.userName} : {item.userScore}
+                                                </span>
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div key={index} className="participant-list">
+                                                <span className="participant">{item.userName}</span>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -180,3 +180,32 @@
     background-color: whitesmoke;
     border-radius: 10px;
 }
+
+.participant-window {
+    border: 1px solid #7843e6;
+    margin-top: 1rem;
+    padding: 1rem;
+    height: 400px;
+    overflow: auto;
+    border-radius: 5px;
+}
+
+.participant-window::-webkit-scrollbar {
+    width: 10px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
+
+.participant-window::-webkit-scrollbar-thumb {
+    background-color: #7843e6;
+    border-radius: 5px;
+}
+
+.participant-window::-webkit-scrollbar-thumb:hover {
+    background-color: #6843e6;
+}
+
+.participant-window::-webkit-scrollbar-track {
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
