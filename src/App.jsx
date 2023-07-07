@@ -46,7 +46,7 @@ function App() {
     console.log("name", userInfo);
 
     API.getUserInfo({ Authorization: cookie.load("authorization") })
-        .then((res) => console.log("result", res))
+        .then((res) => {})
         .catch((error) => console.log("error", error));
 
     return (
@@ -58,12 +58,15 @@ function App() {
             <header className="Logo"></header>
             <div className="Main">
                 <div className="Area1">
-                    <SelectArea userInfo={userInfo} socket={socket} />
+                    <SelectArea
+                        userInfo={userInfo}
+                        socket={socket}
+                    />
                 </div>
 
                 <div className="Area2">
                     {user ? (
-                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom} />
+                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom}  />
                     ) : (
                         <Users ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} />
                     )}
