@@ -2,9 +2,10 @@ import "../css/SelectArea.css";
 import { useState, useEffect } from "react";
 import OptionArea from "./OptionArea";
 import QuizRooms from "./QuizRooms";
+import ChatArea from "./ChatArea";
 import { API } from "../Api";
 
-const SearchArea = () => {
+const SearchArea = ({userInfo, socket}) => {
     const SearchStart = () => {
         API.searchRooms(
             `roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
@@ -15,39 +16,27 @@ const SearchArea = () => {
 
     // 옵션 visible 트리거
     const [option, setOption] = useState(false);
-    const OptionToggle = () => {
-        const newOption = option ? false : true;
-        setOption(newOption);
-    };
+    const OptionToggle = () => setOption(!option);
 
     const [searchRoomName, setSearchRoomName] = useState("");
-
-    const SearchRoomNameTrack = (event) => {
-        setSearchRoomName(event.target.value);
-    };
+    const SearchRoomNameTrack = (event) => setSearchRoomName(event.target.value);
 
     // 하위 컴포넌트로 값 전달 - option
-
     const [selectRoomStatus, setSelectedRoomStatus] = useState("");
-
-    const SelectStatus = (event) => {
-        setSelectedRoomStatus(event.target.value);
-    };
+    const SelectStatus = (event) => setSelectedRoomStatus(event.target.value);
 
     const [people, setPeople] = useState(0);
-
-    const MaxPeopleChange = (event) => {
-        setPeople(event.target.value);
-    };
+    const MaxPeopleChange = (event) => setPeople(event.target.value);
 
     const [rating, setRating] = useState(0);
-
-    const RatingChange = (event) => {
-        setRating(event.target.value);
-    };
+    const RatingChange = (event) => setRating(event.target.value);
 
     // 하위 컴포넌트 전달 - QuizRooms
     const [quizRoom, setQuizRoom] = useState([]);
+
+
+    const [selectedRoom, setSelectedRoom] = useState("");
+    console.log("selected room name:", selectedRoom);
 
     useEffect(() => {
         API.getRooms()
@@ -88,7 +77,12 @@ const SearchArea = () => {
             ) : (
                 ``
             )}
-            <QuizRooms quizRoom={quizRoom} />
+            {selectedRoom ? (
+                <ChatArea userInfo={userInfo} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} socket={socket}/>
+            ) : (
+                <QuizRooms quizRoom={quizRoom} setSelectedRoom={setSelectedRoom} />
+            )}
+
         </div>
     );
 };
