@@ -51,7 +51,7 @@ function App() {
 
     return (
         <div className="App">
-            {loginView ? <LoginWindow ViewLogin={ViewLogin} /> : ""}
+            {loginView ? <LoginWindow ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} /> : ""}
             {SignUpView ? <SignUpWindow ViewSignUp={ViewSignUp} /> : ""}
             {createRoomView ? <CreateRoomWindow ViewCreateRoom={ViewCreateRoom} /> : ""}
 
