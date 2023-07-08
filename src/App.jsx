@@ -15,7 +15,7 @@ function App() {
     // socket control
     const [socket, setSocket] = useState();
     useEffect(() => {
-        const socketIo = io(API.REACT_APP_SERVER_URL);
+        const socketIo = io(process.env.REACT_APP_SERVER_URL);
         setSocket(socketIo);
     }, []);
     useEffect(() => {
