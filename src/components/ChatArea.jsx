@@ -1,7 +1,7 @@
 import "../css/ChatArea.css";
 import { useState, useRef, useEffect } from "react";
 
-const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
+const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, socket }) => {
     // 방 나갈 때 socket 연결 끊기
     const disconnectRoom = (socket) => {
         socket.emit("leaveRoom", { ...userInfo, room: selectedRoom });
@@ -133,9 +133,9 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-75">
-                            <h3 id="room-name" className="py-3">
-                                Room Title
-                            </h3>
+                            <h1 id="room-name" className="py-3">
+                                {selectedRoomInfo.roomName}
+                            </h1>
                         </div>
                         <div className="col-25">
                             <h3 id="room-id" className="room-id">
@@ -221,7 +221,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                                         type="button"
                                         onClick={startQuiz ? undefined : handleStartQuiz}
                                     >
-                                        {startQuiz? "진행 중": "퀴즈시작"}
+                                        {startQuiz ? "진행 중" : "퀴즈시작"}
                                     </button>
                                 </div>
                             </form>
