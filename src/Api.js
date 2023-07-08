@@ -17,6 +17,8 @@ export const API = {
     createRoom: (body) => api.post("/rooms", body),
     // 방 리스트 불러오기
     getRooms: () => api.get("/rooms"),
+    // 단일 방 정보 불러오기(= 입장하기)
+    getRoom: (selectedRoomId) => api.get(`/rooms/${selectedRoomId}`),
     // 방 검색
     searchRooms: (queryString) => api.get(`/rooms/search?${queryString}`),
 

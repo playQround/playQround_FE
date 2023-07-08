@@ -19,7 +19,7 @@ body {
 h1 {
     /* -webkit-text-stroke: 0.005px black; */
     color: #0A62D0;
-    background-color: #F2F2F2;
+    /* background-color: #F2F2F2; */
     font-size: 60px;
     margin: 0px;
 }
