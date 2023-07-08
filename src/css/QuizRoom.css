@@ -38,3 +38,20 @@ p {
     color: #0A62D0;
     font-size: 30px;
 }
+
+.Waiting {
+    font-size: larger;
+    color: #7843e6;
+}
+
+.Playing {
+    font-size: larger;
+    color: #0A62D0;
+    pointer-events: none;
+}
+
+.Done {
+    font-size: larger;
+    color: #FFE180;
+    pointer-events: none;
+}
