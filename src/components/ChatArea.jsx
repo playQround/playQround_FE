@@ -72,14 +72,16 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
     if (selectedRoom) {
         // message가 오면, setMessage로 messages state 변경
         socket.on("message", (message) => setMessages([...messages, message]));
+        // notice가 와도 setMessage로 messages state 변경
+        socket.on("notice", (message) => setMessages([...messages, { notice: message }]));
 
         // client에서 message를 보내기 위한 함수
         const sendMessage = () => {
             socket.emit("message", {
                 room: selectedRoom,
-                message: message,
+                message,
                 nickname,
-                userid: userInfo.userId,
+                userId: userInfo.userId,
                 answer: quiz.answer,
             });
             // message 전송 후 input 창의 message를 초기화
@@ -99,10 +101,11 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
         socket.on("participant", (data) => {
             const newParticipant = JSON.parse(data);
             setParticipant([...newParticipant]);
-            console.log("new participant:", newParticipant);
+            //console.log("new participant:", newParticipant);
+            socket.emit("participant", JSON.stringify(newParticipant));
         });
         socket.on("startQuiz", () => setStartQuiz(!startQuiz));
-        socket.on("quize", (newQuiz) => setQuiz(newQuiz));
+        socket.on("quiz", (newQuiz) => setQuiz(newQuiz));
         socket.on("readyTime", (readyTime) => setReadyTime(readyTime));
         socket.on("quizTime", (quizTime) => setQuizTime(quizTime));
 
@@ -116,9 +119,9 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
         // const [quizTime, setQuizTime] = useState(0);
 
         // 콘솔 확인
-        // console.log("message:", messages);
-        // console.log("roomRecord:", roomRecord);
-        // console.log("startQuiz:", startQuiz);
+        //console.log("message:", messages);
+        //console.log("roomRecord:", roomRecord);
+        console.log("startQuiz:", startQuiz);
         // console.log("quiz:", quiz);
         // console.log("readyTime:", readyTime);
         // console.log("quizTime:", quizTime);
@@ -147,7 +150,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                                 <h2 id="question" className="">
                                     {readyTime
                                         ? readyTime
-                                        : quiz.question + "(" + quiz?.answer.length + "글자)"}
+                                        : quiz.question + "(" + quiz?.answer?.length + "글자)"}
                                 </h2>
                             </div>
                         </div>
@@ -162,7 +165,16 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                         <div className="col-75">
                             <div ref={chatWindow} id="chat" className="chat-window">
                                 {messages.map((message, index) => {
-                                    if (message.includes(nickname)) {
+                                    if (typeof message === "object") {
+                                        console.log(message.notice);
+                                        return (
+                                            <div key={index} className="text-center">
+                                                <span className="chat-notice">
+                                                    {message.notice}
+                                                </span>
+                                            </div>
+                                        );
+                                    } else if (message.includes(nickname)) {
                                         return (
                                             <div key={index} className="chat-individual">
                                                 <span className="chat-oneself">{message}</span>
@@ -201,11 +213,15 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket }) => {
                                         전송
                                     </button>
                                     <button
-                                        className="btn btn-outline-secondary"
+                                        className={
+                                            startQuiz
+                                                ? "btn button-disabled"
+                                                : "btn btn-outline-secondary"
+                                        }
                                         type="button"
-                                        onClick={handleStartQuiz}
+                                        onClick={startQuiz ? undefined : handleStartQuiz}
                                     >
-                                        퀴즈시작
+                                        {startQuiz? "진행 중": "퀴즈시작"}
                                     </button>
                                 </div>
                             </form>
