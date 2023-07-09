@@ -48,48 +48,54 @@ const CreateRoomWindow = ({ ViewCreateRoom }) => {
     return (
         <div className="CreateRoomMain">
             <div className="CreateRoomContent">
-                <h2> CreateRoom </h2>
+                <h2 className="CreateRoomTitle">CreateRoom</h2>
 
                 <form className="CreateRoomBox" onSubmit={CreateRoom}>
-                    <label>
-                        {" "}
+                    <label className="FormLabel">
                         방 이름
                         <input
                             type="text"
                             placeholder="방 이름"
                             value={roomName}
                             onChange={ChangeRoomName}
+                            className="FormInput"
                         />
                     </label>
 
-                    <label> 최대 인원 </label>
+                    <label className="FormLabel">최대 인원</label>
                     <input
                         type="number"
                         placeholder="최대 인원"
                         value={maxPeople}
                         onChange={ChangeMaxPeople}
+                        className="FormInput"
                     />
 
-                    <label> 입장 점수 </label>
+                    <label className="FormLabel">입장 점수</label>
                     <input
                         type="number"
                         placeholder="최소 레이팅 점수"
                         value={cutRating}
                         onChange={ChangeCutRating}
+                        className="FormInput"
                     />
 
-                    <label>
-                        <input type="checkbox" value={roomPublic} onClick={ChangeRoomPublic} />
-                        <span className="slider"></span>
+                    <label className="FormLabel">
+                        <input
+                            type="checkbox"
+                            value={roomPublic}
+                            onClick={ChangeRoomPublic}
+                            className="FormCheckbox"
+                        />
+                        비밀 방
                     </label>
-
-                    <button className="Submit"> Create </button>
+                    <div className="ButtonContainer">
+                        <button className="SubmitButton">Create</button>
+                        <button className="CancelButton" onClick={ViewCreateRoom}>
+                            Cancel
+                        </button>
+                    </div>
                 </form>
-
-                <button className="Cancel" onClick={ViewCreateRoom}>
-                    {" "}
-                    Cancel
-                </button>
             </div>
         </div>
     );

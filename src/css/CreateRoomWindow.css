@@ -18,5 +18,106 @@
     transform: translate(-50%, -50%);
     background-color: white;
     width: 30%;
-    height: 90%;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    color: #7843e6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: 90%;
+}
+
+.CreateRoomTitle {
+    text-align: center;
+    color: #7843e6;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.CreateRoomBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.FormLabel {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.FormInput {
+    width: 250px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.FormCheckbox {
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+}
+
+.FormCheckbox input {
+    display: none;
+}
+
+.FormCheckbox .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.4s;
+}
+
+.FormCheckbox .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+.FormCheckbox input:checked + .slider {
+    background-color: #2196f3;
+}
+
+.FormCheckbox input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.ButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.SubmitButton,
+.CancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.SubmitButton {
+    background-color: #7843e6;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.CancelButton {
+    background-color: #ccc;
+    color: #000;
 }
