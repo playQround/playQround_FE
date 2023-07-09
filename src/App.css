@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap");
 body {
-    font-family: 'Titillium Web', sans-serif;
+    font-family: "Titillium Web", sans-serif;
 }
 
 .App {
     text-align: center;
-    background-color: #E0E5E9;
+    background-color: #e0e5e9;
 }
 
 .Logo {
-    height: 1000px;
-    background-image: url('../public/PlayQRound.png');
+    height: 10vh;
+    background-image: url("../public/PlayQRound.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: auto;
@@ -18,15 +18,10 @@ body {
 
 h1 {
     /* -webkit-text-stroke: 0.005px black; */
-    color: #0A62D0;
+    color: #0a62d0;
     /* background-color: #F2F2F2; */
     font-size: 60px;
     margin: 0px;
-}
-
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
 }
 
 .Logo {
@@ -36,19 +31,39 @@ h1 {
 .Main {
     /* border: 1px solid black; */
     display: flex;
-    height: 800px;
+    height: calc(100vh - 100px);
 }
 
 .Area1 {
     width: 85%;
     height: 100%;
-    overflow: auto;
+    overflow-y: scroll;
     /* border: 1px solid black; */
+}
+
+.Area1::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+}
+
+.Area1::-webkit-scrollbar-thumb {
+    background-color: #6843e6;
+    border-radius: 5px;
+}
+
+.Area1::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 5px;
 }
 
 .Area2 {
     width: 15%;
     height: 100%;
     /* border: 1px solid black; */
-    background-color: #FFE180;
+    background-color: #ffe180;
+}
+
+body {
+    overflow-y: scroll;
+    overflow: hidden;
 }
