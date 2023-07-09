@@ -39,15 +39,26 @@ function App() {
     const ViewCreateRoom = () => setCreateRoomView(!createRoomView);
 
     // read cookie to check login or not
-    const user = cookie.load("authorization");
-    const userInfo = user
-        ? decodeJwt(user)
-        : { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
-    console.log("name", userInfo);
-
-    API.getUserInfo({ Authorization: cookie.load("authorization") })
-        .then((res) => {})
-        .catch((error) => console.log("error", error));
+    const token = cookie.load("authorization");
+    let userInfo;
+    // if there is a token, check if it has expired,
+    if (token && decodeJwt(token).exp < parseInt(Date.now() / 1000)) {
+        // delete token and
+        cookie.remove("authorization");
+        // set user information as anonymous again,
+        userInfo = { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
+    } else if (token) {
+        // if token has not expired, try login
+        API.getUserInfo({ Authorization: cookie.load("authorization") })
+            .then((res) => {
+                userInfo.userRating = res.data.userRating;
+            })
+            .catch((error) => console.log("error", error));
+        userInfo = decodeJwt(token);
+    } else {
+        // if there is no token save user information as anonymous
+        userInfo = { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
+    }
 
     return (
         <div className="App">
@@ -58,15 +69,12 @@ function App() {
             <header className="Logo"></header>
             <div className="Main">
                 <div className="Area1">
-                    <SelectArea
-                        userInfo={userInfo}
-                        socket={socket}
-                    />
+                    <SelectArea userInfo={userInfo} socket={socket} />
                 </div>
 
                 <div className="Area2">
-                    {user ? (
-                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom}  />
+                    {token ? (
+                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom} />
                     ) : (
                         <Users ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} />
                     )}
