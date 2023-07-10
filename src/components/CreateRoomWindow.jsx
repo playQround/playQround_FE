@@ -2,7 +2,7 @@ import "../css/CreateRoomWindow.css";
 import { useState } from "react";
 import { API } from "../Api";
 
-const CreateRoomWindow = ({ ViewCreateRoom }) => {
+const CreateRoomWindow = ({ ViewCreateRoom, setSelectedRoom }) => {
     const [roomName, setRoomName] = useState("");
     const ChangeRoomName = (event) => {
         setRoomName(event.target.value);
@@ -40,7 +40,9 @@ const CreateRoomWindow = ({ ViewCreateRoom }) => {
         API.createRoom(data)
             .then((response) => {
                 // const next = response.data.roomId
-                window.location.reload();
+                alert(`방을 만들었습니다. (키: ${response.data.roomId})`);
+                ViewCreateRoom();
+                setSelectedRoom(response.data.roomId);
             })
             .catch((error) => console.log(error));
     };
