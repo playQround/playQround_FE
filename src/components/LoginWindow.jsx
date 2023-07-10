@@ -3,7 +3,7 @@ import cookie from "react-cookies";
 import { useState } from "react";
 import { API } from "../Api";
 
-const LoginWindow = ({ ViewLogin }) => {
+const LoginWindow = ({ ViewLogin, ViewSignUp }) => {
     const [email, setEmail] = useState("");
     const ChangeEmail = (event) => {
         setEmail(event.target.value);
@@ -33,6 +33,11 @@ const LoginWindow = ({ ViewLogin }) => {
             });
     };
 
+    const LoginToSignUp = () => {
+        ViewLogin()
+        ViewSignUp()
+    }
+
     return (
         <div className="LoginMain">
             <div className="LoginContent">
@@ -49,11 +54,8 @@ const LoginWindow = ({ ViewLogin }) => {
                     <button className="Submit"> Submit </button>
                 </form>
 
-                <button className="SignIn"> Sign In </button>
-                <button className="Cancel" onClick={ViewLogin}>
-                    {" "}
-                    Cancel{" "}
-                </button>
+                <button className="SignIn" onClick={LoginToSignUp}> Sign Up </button>
+                <button className="Cancel" onClick={ViewLogin}>Cancel</button>
             </div>
         </div>
     );
