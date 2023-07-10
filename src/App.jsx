@@ -17,14 +17,12 @@ function App() {
     useEffect(() => {
         const socketIo = io(process.env.REACT_APP_SERVER_URL);
         setSocket(socketIo);
-    }, []);
-    useEffect(() => {
         return () => {
             if (socket) {
                 socket.disconnect();
             }
         };
-    });
+    }, []);
 
     // login popup state control
     const [loginView, setLoginView] = useState(false);
@@ -37,6 +35,10 @@ function App() {
     // create Room popup state control
     const [createRoomView, setCreateRoomView] = useState(false);
     const ViewCreateRoom = () => setCreateRoomView(!createRoomView);
+
+    // Room 선택 state
+    const [selectedRoom, setSelectedRoom] = useState("");
+    console.log("app.jsx selectedRoom:", selectedRoom);
 
     // read cookie to check login or not
     const token = cookie.load("authorization");
@@ -64,12 +66,24 @@ function App() {
         <div className="App">
             {loginView ? <LoginWindow ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} /> : ""}
             {SignUpView ? <SignUpWindow ViewSignUp={ViewSignUp} /> : ""}
-            {createRoomView ? <CreateRoomWindow ViewCreateRoom={ViewCreateRoom} /> : ""}
+            {createRoomView ? (
+                <CreateRoomWindow
+                    ViewCreateRoom={ViewCreateRoom}
+                    setSelectedRoom={setSelectedRoom}
+                />
+            ) : (
+                ""
+            )}
 
             <header className="Logo"></header>
             <div className="Main">
                 <div className="Area1">
-                    <SelectArea userInfo={userInfo} socket={socket} />
+                    <SelectArea
+                        userInfo={userInfo}
+                        socket={socket}
+                        selectedRoom={selectedRoom}
+                        setSelectedRoom={setSelectedRoom}
+                    />
                 </div>
 
                 <div className="Area2">
