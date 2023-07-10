@@ -37,7 +37,7 @@ const SearchArea = ({ userInfo, socket }) => {
     // Room 선택 state
     const [selectedRoom, setSelectedRoom] = useState("");
     // 선택한 Room 정보 state
-    const [selectedRoomInfo, setSelectedRoomInfo] = useState({roomName: "입장 전"});
+    const [selectedRoomInfo, setSelectedRoomInfo] = useState({ roomName: "입장 전" });
     // Room 선택 시 단일 Room 정보 API 요청(입장 요청)
     useEffect(() => {
         if (selectedRoom) {
@@ -59,48 +59,50 @@ const SearchArea = ({ userInfo, socket }) => {
             });
     }, []);
 
-    return (
-        <div>
-            <div className="SelectArea">
-                <div id="SearchForm">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        onChange={SearchRoomNameTrack}
-                        value={searchRoomName}
-                    />
+    if (selectedRoom) {
+        return (
+            <ChatArea
+                userInfo={userInfo}
+                selectedRoom={selectedRoom}
+                selectedRoomInfo={selectedRoomInfo}
+                setSelectedRoom={setSelectedRoom}
+                socket={socket}
+            />
+        );
+    } else {
+        return (
+            <div>
+                <div className="SelectArea">
+                    <div id="SearchForm">
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            onChange={SearchRoomNameTrack}
+                            value={searchRoomName}
+                        />
 
-                    <button onClick={SearchStart}> Search </button>
-                    <button className="OptionButton" onClick={OptionToggle}>
-                        {" "}
-                        Option{" "}
-                    </button>
+                        <button onClick={SearchStart}> Search </button>
+                        <button className="OptionButton" onClick={OptionToggle}>
+                            {" "}
+                            Option{" "}
+                        </button>
+                    </div>
                 </div>
-            </div>
-            {option ? (
-                <OptionArea
-                    rating={rating}
-                    RatingChange={RatingChange}
-                    people={people}
-                    MaxPeopleChange={MaxPeopleChange}
-                    SelectStatus={SelectStatus}
-                />
-            ) : (
-                ``
-            )}
-            {selectedRoom ? (
-                <ChatArea
-                    userInfo={userInfo}
-                    selectedRoom={selectedRoom}
-                    selectedRoomInfo={selectedRoomInfo}
-                    setSelectedRoom={setSelectedRoom}
-                    socket={socket}
-                />
-            ) : (
+                {option ? (
+                    <OptionArea
+                        rating={rating}
+                        RatingChange={RatingChange}
+                        people={people}
+                        MaxPeopleChange={MaxPeopleChange}
+                        SelectStatus={SelectStatus}
+                    />
+                ) : (
+                    ``
+                )}
                 <QuizRooms quizRoom={quizRoom} setSelectedRoom={setSelectedRoom} />
-            )}
-        </div>
-    );
+            </div>
+        );
+    }
 };
 
 export default SearchArea;

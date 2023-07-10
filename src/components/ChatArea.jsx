@@ -131,37 +131,24 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
         return (
             <>
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-75">
-                            <h1 id="room-name" className="py-3">
-                                {selectedRoomInfo.roomName}
-                            </h1>
+                    <div id="room-id" className="row row-5">
+                        <div className="col-100 room-id">[방 코드] {selectedRoom}</div>
+                    </div>
+                    <div id="room-name" className="row row-10">
+                        <div className="col-100 room-name">{selectedRoomInfo.roomName}</div>
+                    </div>
+                    <div className="row row-5">
+                        <div id="question" className="col-75 text-center">
+                            {readyTime
+                                ? readyTime
+                                : quiz.question + "(" + quiz?.answer?.length + "글자)"}
                         </div>
-                        <div className="col-25">
-                            <h3 id="room-id" className="room-id">
-                                [방 코드] {selectedRoom}
-                            </h3>
+                        <div id="quiz-count" className="col-25 text-center">
+                            {quizTime}
                         </div>
                     </div>
 
-                    <div className="row">
-                        <div className="col-75 text-center">
-                            <div>
-                                <h2 id="question" className="">
-                                    {readyTime
-                                        ? readyTime
-                                        : quiz.question + "(" + quiz?.answer?.length + "글자)"}
-                                </h2>
-                            </div>
-                        </div>
-                        <div className="col-25 text-center">
-                            <h3 id="quiz-count" className="text-center">
-                                {quizTime}
-                            </h3>
-                        </div>
-                    </div>
-
-                    <div className="row">
+                    <div className="row row-70">
                         <div className="col-75">
                             <div ref={chatWindow} id="chat" className="chat-window">
                                 {messages.map((message, index) => {
@@ -227,31 +214,36 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
                             </form>
                         </div>
                         <div className="col-25 border-left">
-                            <ul id="participant-list" className="participant-window">
-                                <h3 className="text-center">참여자 목록</h3>
-                                {participant.map((item, index) => {
-                                    if (startQuiz) {
-                                        return (
-                                            <div key={index} className="participant-list">
-                                                <span className="participant">
-                                                    {item.userName} : {item.userScore}
-                                                </span>
-                                            </div>
-                                        );
-                                    } else {
-                                        return (
-                                            <div key={index} className="participant-list">
-                                                <span className="participant">{item.userName}</span>
-                                            </div>
-                                        );
-                                    }
-                                })}
-                            </ul>
+                            <div>
+                                <div id="participant-list" className="participant-window">
+                                    <h3 className="text-center">참여자 목록</h3>
+                                    {participant.map((item, index) => {
+                                        if (startQuiz) {
+                                            return (
+                                                <div key={index} className="participant-list">
+                                                    <span className="participant">
+                                                        {item.userName} : {item.userScore}
+                                                    </span>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={index} className="participant-list">
+                                                    <span className="participant">
+                                                        {item.userName}
+                                                    </span>
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div>
+                            </div>
+                            <div>
+                                <button onClick={() => disconnectRoom(socket)}>방 나가기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <button onClick={() => disconnectRoom(socket)}>방 나가기</button>
             </>
         );
     } else {
