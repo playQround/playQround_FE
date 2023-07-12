@@ -44,11 +44,11 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
     const [message, setMessage] = useState("");
     const messageChangeHandler = (event) => setMessage(event.target.value);
 
-    // "roomRecord" 방 결과 중간 결과 state
-    const [roomRecord, setRoomRecord] = useState({});
-
     // "startQuiz" 퀴즈 시작
     const [startQuiz, setStartQuiz] = useState(false);
+
+    // 풀 퀴즈 숫자 정보
+    const [remainingQuizzes, setRemainingQuizzes] = useState(10);
 
     // "quiz" 퀴즈 내용
     const [quiz, setQuiz] = useState({ question: "퀴즈 시작 전" });
@@ -83,12 +83,12 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
                 nickname,
                 userId: userInfo.userId,
                 answer: quiz.answer,
+                remainingQuizzes,
+                point: 1,
             });
             // message 전송 후 input 창의 message를 초기화
             setMessage("");
         };
-
-        socket.on("roomRecord", (record) => setRoomRecord(record));
 
         // "startQuiz" 퀴즈 시작
         const handleStartQuiz = () => {
@@ -96,8 +96,11 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
             socket.emit("startQuiz", {
                 room: selectedRoom,
                 nickname,
+                remainingQuizzes,
             });
         };
+        // 남은 퀴즈 개수를 받아서 저장
+        socket.on("remainingQuizzesNum", (data) => setRemainingQuizzes(data));
         socket.on("participant", (data) => {
             const newParticipant = JSON.parse(data);
             setParticipant([...newParticipant]);
@@ -121,8 +124,9 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
         // 콘솔 확인
         //console.log("message:", messages);
         //console.log("roomRecord:", roomRecord);
-        console.log("startQuiz:", startQuiz);
+        // console.log("startQuiz:", startQuiz);
         // console.log("quiz:", quiz);
+        console.log("remaining...", remainingQuizzes);
         // console.log("readyTime:", readyTime);
         // console.log("quizTime:", quizTime);
         // console.log("participant:", participant);
