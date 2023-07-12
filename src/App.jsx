@@ -26,8 +26,7 @@ function App() {
             if (socket) {
                 socket.disconnect();
             }
-    
-            if (webRtcSocket) {
+            if (webRtcSocket){
                 webRtcSocket.disconnect();
             }
         };
@@ -36,7 +35,6 @@ function App() {
     // web RTC 
     const localVideoRef = useRef();
     const [localStream, setLocalStream] = useState();
-    
     useEffect(() => {
         const getMedia = async() => {
             try {
@@ -44,19 +42,18 @@ function App() {
                     video: true,
                     audio: true,
                 });
-                console.log("stream", stream);
     
                 if (localStream === undefined){
                     setLocalStream(stream);
                 }
-                
+                console.log("localStream", localStream)
+                console.log("streamRef", localVideoRef)
                 // localStream = stream;
     
                 if (localVideoRef.current) {
                     localVideoRef.current.muted = true;
                     localVideoRef.current.srcObject = stream;
                 }
-                console.log("REF", localVideoRef.current);
     
             } catch (error) {
                 console.log(error);
@@ -64,11 +61,15 @@ function App() {
         };
         getMedia();
 
-        return () => {
-            setLocalStream();
-            
-        }
-    }, [])
+    }, [localStream])
+
+    // web RTC 토글 버튼
+    const [toggleButton, setToggleButton] = useState(false);
+    // console.log(toggleButton)
+    
+    const WebRtcConnect = () => {
+        setToggleButton(!toggleButton);
+    }
 
     // login popup state control
     const [loginView, setLoginView] = useState(false);
@@ -107,6 +108,8 @@ function App() {
                         webRtcSocket={webRtcSocket}
                         localVideoRef={localVideoRef}
                         localStream={localStream}
+                        WebRtcConnect={WebRtcConnect}
+                        toggleButton={toggleButton}
                     />
                 </div>
 
@@ -118,9 +121,7 @@ function App() {
                     )}
                 </div>
             </div>
-            <div>
                 <video autoPlay ref={localVideoRef}></video>
-            </div>
         </div>
     );
 }
