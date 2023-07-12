@@ -38,16 +38,13 @@ function App() {
         const getMedia = async() => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
+                    // video: true,
                     audio: true,
                 });
-    
                 if (localStream === undefined){
+                    
                     setLocalStream(stream);
                 }
-                console.log("localStream", localStream)
-                console.log("streamRef", localVideoRef)
-                // localStream = stream;
     
                 if (localVideoRef.current) {
                     localVideoRef.current.muted = true;
@@ -143,9 +140,9 @@ function App() {
                     ) : (
                         <Users ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} />
                     )}
+                    <video autoPlay ref={localVideoRef}></video>
                 </div>
             </div>
-                <video autoPlay ref={localVideoRef}></video>
         </div>
     );
 }

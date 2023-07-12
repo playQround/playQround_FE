@@ -1,27 +1,19 @@
 import "../css/ChatArea.css";
 import { useState, useRef, useEffect } from "react";
 
-const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
-    const [remoteVideo, setRemoteVideo] = useState([]);
-    const remoteVideoRef = useRef();
-
+const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, socket, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
+    const [connectStatus, setConnectStatus] = useState(false);
     // 음성 채팅방 연결
     const share = async() => {
         webRtcSocket.emit('join', selectedRoom);
     }
     
-    useEffect(() => {
-        console.log(toggleButton)
-        if (toggleButton){
-            share();
-        }
-    }, [toggleButton])
+    // let selectedCandidate = {}; 
     
     // RTC peerConnection
     useEffect(() => {
         let peerInfo = {};
-        let selectedCandidate = {};
-    
+
         const makePeerConnect = async(userId) => {
             peerInfo[userId] = new Object();
             peerInfo[userId].peerConnection = new RTCPeerConnection({
@@ -49,17 +41,12 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
     
         // 상대 영상 & 비디오 추가
         const addStream = (data) => {
-            remoteVideoRef.current.srcObject = data.stream;
-            console.log("remote stream",data.stream);
-
-            // setRemoteVideo([...remoteVideo, remoteVideoRef]);
-            // let videoArea = document.createElement("video");
-            // videoArea.autoplay = true;
-            // videoArea.srcObject = data.stream;
-            // let container = document.getElementById("container");
-            // container.appendChild(videoArea);
+            let videoArea = document.createElement("video");
+            videoArea.autoplay = true;
+            videoArea.srcObject = data.stream;
+            let container = document.getElementById("root");
+            container.appendChild(videoArea);
         };
-    
     
         // RTC socket
 
@@ -67,12 +54,13 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
         webRtcSocket.on('enter', async({
             userId
         }) => {
-            console.log("enter: ", userId)
+            console.log(userId, "님이 방에 참가")
+            console.log(peerInfo)
             await makePeerConnect(userId);
             const offer = await peerInfo[userId].peerConnection.createOffer();
             await peerInfo[userId].peerConnection.setLocalDescription(offer);
             webRtcSocket.emit("offer", { offer, selectedRoom });
-            console.log("offering")
+            console.log("send offer");
         });
     
         // 기존 유저로부터 보이스 연결 수신을 받음
@@ -81,7 +69,6 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
             offer
         }) => {
             if (!peerInfo[userId]) {
-                console.log("receive offer : ", userId)
                 await makePeerConnect(userId);
                 await peerInfo[userId].peerConnection.setRemoteDescription(offer);
     
@@ -102,7 +89,6 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
             answer,
             toUserId
         }) => {
-            console.log("receive answer : ", userId)
             if (peerInfo[toUserId] === undefined) {
                 await peerInfo[userId].peerConnection.setRemoteDescription(answer);
             };
@@ -113,17 +99,51 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
             userId,
             candidate
         }) => {
-            if (selectedCandidate[candidate.candidate] === undefined) {
-                selectedCandidate[candidate.candidate] = true;
+            // if (selectedCandidate[candidate.candidate] === undefined) {
+            //     selectedCandidate[candidate.candidate] = true;
                 await peerInfo[userId].peerConnection.addIceCandidate(candidate);
-                console.log("complete", peerInfo[userId])
-            };
+            // };
         });
+
+        // 연결 해제 - 타인
+        webRtcSocket.on("someoneLeaveRoom", async({ userId }) => {
+            console.log(userId, "님이 퇴장")
+            if (peerInfo[userId]){
+                peerInfo[userId].peerConnection.close();
+                delete peerInfo[userId];
+                console.log(peerInfo[userId])
+            }
+        })
+
+        // 연결 해제 - 본인
+        webRtcSocket.on("youLeaveRoom", async({ userId }) => {
+            for (let user in peerInfo){
+                peerInfo[user].peerConnection.close();
+                delete peerInfo[user]
+            }
+            console.log("퇴장", peerInfo);
+            webRtcSocket.emit("exit", selectedRoom);
+        });
+
     }, [])
 
+    useEffect(() => {
+        if (toggleButton){
+            share();
+            setConnectStatus(true);
+            console.log("연결 시도")
+        } else if (toggleButton === false && connectStatus){
+            webRtcSocket.emit("leaveRoom", selectedRoom);
+            setConnectStatus(false);
+            console.log("종료")
+        }
+
+    }, [toggleButton])
+
     // 방 나갈 때 socket 연결 끊기
-    const disconnectRoom = (socket) => {
+    const disconnectRoom = (socket, webRtcSocket) => {
         socket.emit("leaveRoom", { ...userInfo, room: selectedRoom });
+        webRtcSocket.emit("leaveRoom", selectedRoom);
         setSelectedRoom("");
     };
 
@@ -348,16 +368,14 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
                                 </div>
                             </div>
                             <div>
-                                <button onClick={() => disconnectRoom(socket)}>방 나가기</button>
+                                <button onClick={() => disconnectRoom(socket, webRtcSocket)}>방 나가기</button>
                             </div>
                             <div>
                                   <label className="toggle-button">
                                 <input role="switch" type="checkbox" onChange={WebRtcConnect}/>
                                 <span> RTC </span>
                             </label>
-                            {remoteVideo ? remoteVideo.map((stream) => {
-                                return <video autoPlay ref={stream}></video>
-                            }) : ""}
+                            
                             </div>
                         </div>
                     </div>
