@@ -1,10 +1,149 @@
 import "../css/ChatArea.css";
 import { useState, useRef, useEffect } from "react";
 
-const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, socket }) => {
+const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, socket, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
+    const [connectStatus, setConnectStatus] = useState(false);
+    // 음성 채팅방 연결
+    const share = async() => {
+        webRtcSocket.emit('join', selectedRoom);
+    }
+    
+    // let selectedCandidate = {}; 
+    
+    // RTC peerConnection
+    useEffect(() => {
+        let peerInfo = {};
+
+        const makePeerConnect = async(userId) => {
+            peerInfo[userId] = new Object();
+            peerInfo[userId].peerConnection = new RTCPeerConnection({
+                "iceServers": [{
+                    urls: 'stun:stun.l.google.com:19302'
+                }]
+            });
+            peerInfo[userId].peerConnection.addEventListener("icecandidate", icecandidate);
+            peerInfo[userId].peerConnection.addEventListener("addstream", addStream);
+
+            for (let track of localStream.getTracks()) {
+                await peerInfo[userId].peerConnection.addTrack(track, localStream);
+            }
+        };
+    
+        // 연결 후보 교환
+        const icecandidate = (data) => {
+            if (data.candidate) {
+                webRtcSocket.emit("icecandidate", {
+                    candidate : data.candidate,
+                    selectedRoom,
+                });
+            }
+        };
+    
+        // 상대 영상 & 비디오 추가
+        const addStream = (data) => {
+            let videoArea = document.createElement("video");
+            videoArea.autoplay = true;
+            videoArea.srcObject = data.stream;
+            let container = document.getElementById("root");
+            container.appendChild(videoArea);
+        };
+    
+        // RTC socket
+
+        // 타 유저 보이스 채널 입장 확인
+        webRtcSocket.on('enter', async({
+            userId
+        }) => {
+            console.log(userId, "님이 방에 참가")
+            console.log(peerInfo)
+            await makePeerConnect(userId);
+            const offer = await peerInfo[userId].peerConnection.createOffer();
+            await peerInfo[userId].peerConnection.setLocalDescription(offer);
+            webRtcSocket.emit("offer", { offer, selectedRoom });
+            console.log("send offer");
+        });
+    
+        // 기존 유저로부터 보이스 연결 수신을 받음
+        webRtcSocket.on("offer", async({
+            userId,
+            offer
+        }) => {
+            if (!peerInfo[userId]) {
+                await makePeerConnect(userId);
+                await peerInfo[userId].peerConnection.setRemoteDescription(offer);
+    
+                const answer = await peerInfo[userId].peerConnection.createAnswer(offer);
+    
+                await peerInfo[userId].peerConnection.setLocalDescription(answer);
+                webRtcSocket.emit("answer", {
+                    answer,
+                    toUserId: userId,
+                    selectedRoom,
+                });
+            }
+        });
+    
+        // 신규 유저로부터 응답을 받음
+        webRtcSocket.on("answer", async({
+            userId,
+            answer,
+            toUserId
+        }) => {
+            if (peerInfo[toUserId] === undefined) {
+                await peerInfo[userId].peerConnection.setRemoteDescription(answer);
+            };
+        });
+    
+        // 연결 후보를 수신 받음
+        webRtcSocket.on("icecandidate", async({
+            userId,
+            candidate
+        }) => {
+            // if (selectedCandidate[candidate.candidate] === undefined) {
+            //     selectedCandidate[candidate.candidate] = true;
+                await peerInfo[userId].peerConnection.addIceCandidate(candidate);
+            // };
+        });
+
+        // 연결 해제 - 타인
+        webRtcSocket.on("someoneLeaveRoom", async({ userId }) => {
+            console.log(userId, "님이 퇴장")
+            if (peerInfo[userId]){
+                peerInfo[userId].peerConnection.close();
+                delete peerInfo[userId];
+                console.log(peerInfo[userId])
+            }
+        })
+
+        // 연결 해제 - 본인
+        webRtcSocket.on("youLeaveRoom", async({ userId }) => {
+            for (let user in peerInfo){
+                peerInfo[user].peerConnection.close();
+                delete peerInfo[user]
+            }
+            console.log("퇴장", peerInfo);
+            webRtcSocket.emit("exit", selectedRoom);
+        });
+
+    }, [])
+
+    useEffect(() => {
+        if (toggleButton){
+            share();
+            setConnectStatus(true);
+            console.log("연결 시도")
+        } else if (toggleButton === false && connectStatus){
+            webRtcSocket.emit("leaveRoom", selectedRoom);
+            setConnectStatus(false);
+            console.log("종료")
+        }
+
+    }, [toggleButton])
+
     // 방 나갈 때 socket 연결 끊기
-    const disconnectRoom = (socket) => {
+    const disconnectRoom = (socket, webRtcSocket) => {
         socket.emit("leaveRoom", { ...userInfo, room: selectedRoom });
+        webRtcSocket.emit("leaveRoom", selectedRoom);
         setSelectedRoom("");
     };
 
@@ -28,7 +167,6 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
         }
         // 방 입장 state를 true로 변경
         setEnteredRoom(true);
-        console.log("nickname:", nickname);
     }, []);
 
     // 채팅 목록
@@ -120,13 +258,13 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
 
         // // "quizTime" 퀴즈 푸는 시간 카운트 다운
         // const [quizTime, setQuizTime] = useState(0);
-
+      
         // 콘솔 확인
         //console.log("message:", messages);
         //console.log("roomRecord:", roomRecord);
         // console.log("startQuiz:", startQuiz);
         // console.log("quiz:", quiz);
-        console.log("remaining...", remainingQuizzes);
+        //console.log("remaining...", remainingQuizzes);
         // console.log("readyTime:", readyTime);
         // console.log("quizTime:", quizTime);
         // console.log("participant:", participant);
@@ -212,7 +350,7 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
                                         type="button"
                                         onClick={startQuiz ? undefined : handleStartQuiz}
                                     >
-                                        {startQuiz ? "진행 중" : "퀴즈시작"}
+                                        {startQuiz? "진행 중": "퀴즈시작"}
                                     </button>
                                 </div>
                             </form>
@@ -243,7 +381,14 @@ const ChatArea = ({ userInfo, selectedRoom, selectedRoomInfo, setSelectedRoom, s
                                 </div>
                             </div>
                             <div>
-                                <button onClick={() => disconnectRoom(socket)}>방 나가기</button>
+                                <button onClick={() => disconnectRoom(socket, webRtcSocket)}>방 나가기</button>
+                            </div>
+                            <div>
+                                  <label className="toggle-button">
+                                <input role="switch" type="checkbox" onChange={WebRtcConnect}/>
+                                <span> RTC </span>
+                            </label>
+                            
                             </div>
                         </div>
                     </div>

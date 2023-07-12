@@ -23,12 +23,32 @@ const RoomStatusCheck = ({ status }) => {
 
 
 const EachRoom = ({ socketRoom, name, status, now, max, setSelectedRoom }) => {
-    
+    let peopleInRoom = "Roompeople";
+    if (max === now ){
+        peopleInRoom = "RoompeopleMax";
+    }
+
+    const EnteringRoom = () => {
+        if (max === now){
+            alert("최대 인원에 도달했습니다.");
+            return 
+
+        } else if (status === 1) {
+            alert("진행 중인 방에 입장할 수 없습니다.")
+            return 
+
+        } else if (status === 2){
+            alert("종료된 방 입니다.")
+            return 
+        }
+        return setSelectedRoom(socketRoom);
+    }
+
     return (
-        <div className="QuizRoom" onClick={() => setSelectedRoom(socketRoom)}>
+        <div className="QuizRoom" onClick={() => EnteringRoom()}>
             <p className="RoomName"> {name} </p>
             <RoomStatusCheck status={status} />
-            <p className="RoomPeople">
+            <p className={peopleInRoom}>
                 {" "}
                 {now} / {max}{" "}
             </p>

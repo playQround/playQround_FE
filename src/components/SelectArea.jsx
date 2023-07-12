@@ -5,7 +5,7 @@ import QuizRooms from "./QuizRooms";
 import ChatArea from "./ChatArea";
 import { API } from "../Api";
 
-const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom }) => {
+const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
     const SearchStart = () => {
         API.searchRooms(
             `roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
@@ -65,6 +65,11 @@ const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom }) => {
                 selectedRoomInfo={selectedRoomInfo}
                 setSelectedRoom={setSelectedRoom}
                 socket={socket}
+                webRtcSocket={webRtcSocket}
+                localStream={localStream}
+                localVideoRef={localVideoRef}
+                WebRtcConnect={WebRtcConnect}
+                toggleButton={toggleButton}
             />
         );
     } else {

@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import cookie from "react-cookies";
 import SelectArea from "./components/SelectArea";
 import Users from "./components/Users";
@@ -14,15 +14,58 @@ import { API } from "./Api";
 function App() {
     // socket control
     const [socket, setSocket] = useState();
+    const [webRtcSocket, setWebRtcSocket] = useState();
+    
     useEffect(() => {
         const socketIo = io(process.env.REACT_APP_SERVER_URL);
-        setSocket(socketIo);
+        setSocket(socketIo);        
+        const webRtcSocketIo = io("https://socket.playqround.site/");
+        setWebRtcSocket(webRtcSocketIo);
         return () => {
             if (socket) {
                 socket.disconnect();
             }
+            if (webRtcSocket){
+                webRtcSocket.disconnect();
+            }
         };
     }, []);
+
+    // web RTC 
+    const localVideoRef = useRef();
+    const [localStream, setLocalStream] = useState();
+    useEffect(() => {
+        const getMedia = async() => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    // video: true,
+                    audio: true,
+                });
+                if (localStream === undefined){
+                    
+                    setLocalStream(stream);
+                }
+    
+                if (localVideoRef.current) {
+                    localVideoRef.current.muted = true;
+                    localVideoRef.current.srcObject = stream;
+                }
+    
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getMedia();
+
+    }, [localStream])
+
+    // web RTC 토글 버튼
+    const [toggleButton, setToggleButton] = useState(false);
+    // console.log(toggleButton)
+    
+    const WebRtcConnect = () => {
+        setToggleButton(!toggleButton);
+    }
 
     // login popup state control
     const [loginView, setLoginView] = useState(false);
@@ -81,6 +124,11 @@ function App() {
                     <SelectArea
                         userInfo={userInfo}
                         socket={socket}
+                        webRtcSocket={webRtcSocket}
+                        localVideoRef={localVideoRef}
+                        localStream={localStream}
+                        WebRtcConnect={WebRtcConnect}
+                        toggleButton={toggleButton}
                         selectedRoom={selectedRoom}
                         setSelectedRoom={setSelectedRoom}
                     />
@@ -92,6 +140,7 @@ function App() {
                     ) : (
                         <Users ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} />
                     )}
+                    <video autoPlay ref={localVideoRef}></video>
                 </div>
             </div>
         </div>
