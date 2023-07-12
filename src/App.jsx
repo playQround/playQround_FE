@@ -18,8 +18,7 @@ function App() {
     
     useEffect(() => {
         const socketIo = io(process.env.REACT_APP_SERVER_URL);
-        setSocket(socketIo);
-        
+        setSocket(socketIo);        
         const webRtcSocketIo = io("http://localhost:3000");
         setWebRtcSocket(webRtcSocketIo);
         return () => {
@@ -83,21 +82,44 @@ function App() {
     const [createRoomView, setCreateRoomView] = useState(false);
     const ViewCreateRoom = () => setCreateRoomView(!createRoomView);
 
-    // read cookie to check login or not
-    const user = cookie.load("authorization");
-    const userInfo = user
-        ? decodeJwt(user)
-        : { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
+    // Room 선택 state
+    const [selectedRoom, setSelectedRoom] = useState("");
+    console.log("app.jsx selectedRoom:", selectedRoom);
 
-    API.getUserInfo({ Authorization: cookie.load("authorization") })
-        .then((res) => {})
-        .catch((error) => console.log("error", error));
+    // read cookie to check login or not
+    const token = cookie.load("authorization");
+    let userInfo;
+    // if there is a token, check if it has expired,
+    if (token && decodeJwt(token).exp < parseInt(Date.now() / 1000)) {
+        // delete token and
+        cookie.remove("authorization");
+        // set user information as anonymous again,
+        userInfo = { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
+    } else if (token) {
+        // if token has not expired, try login
+        API.getUserInfo({ Authorization: cookie.load("authorization") })
+            .then((res) => {
+                userInfo.userRating = res.data.userRating;
+            })
+            .catch((error) => console.log("error", error));
+        userInfo = decodeJwt(token);
+    } else {
+        // if there is no token save user information as anonymous
+        userInfo = { userId: -1, userEmail: "anonymous", userName: "anonymous", userRating: 0 };
+    }
 
     return (
         <div className="App">
-            {loginView ? <LoginWindow ViewLogin={ViewLogin} /> : ""}
+            {loginView ? <LoginWindow ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} /> : ""}
             {SignUpView ? <SignUpWindow ViewSignUp={ViewSignUp} /> : ""}
-            {createRoomView ? <CreateRoomWindow ViewCreateRoom={ViewCreateRoom} /> : ""}
+            {createRoomView ? (
+                <CreateRoomWindow
+                    ViewCreateRoom={ViewCreateRoom}
+                    setSelectedRoom={setSelectedRoom}
+                />
+            ) : (
+                ""
+            )}
 
             <header className="Logo"></header>
             <div className="Main">
@@ -110,12 +132,14 @@ function App() {
                         localStream={localStream}
                         WebRtcConnect={WebRtcConnect}
                         toggleButton={toggleButton}
+                        selectedRoom={selectedRoom}
+                        setSelectedRoom={setSelectedRoom}
                     />
                 </div>
 
                 <div className="Area2">
-                    {user ? (
-                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom}  />
+                    {token ? (
+                        <LoginUsers userInfo={userInfo} ViewCreateRoom={ViewCreateRoom} />
                     ) : (
                         <Users ViewLogin={ViewLogin} ViewSignUp={ViewSignUp} />
                     )}

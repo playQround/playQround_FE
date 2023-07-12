@@ -240,37 +240,24 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
         return (
             <>
                 <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-75">
-                            <h3 id="room-name" className="py-3">
-                                Room Title
-                            </h3>
+                    <div id="room-id" className="row row-5">
+                        <div className="col-100 room-id">[방 코드] {selectedRoom}</div>
+                    </div>
+                    <div id="room-name" className="row row-10">
+                        <div className="col-100 room-name">{selectedRoomInfo.roomName}</div>
+                    </div>
+                    <div className="row row-5">
+                        <div id="question" className="col-75 text-center">
+                            {readyTime
+                                ? readyTime
+                                : quiz.question + "(" + quiz?.answer?.length + "글자)"}
                         </div>
-                        <div className="col-25">
-                            <h3 id="room-id" className="room-id">
-                                [방 코드] {selectedRoom}
-                            </h3>
+                        <div id="quiz-count" className="col-25 text-center">
+                            {quizTime}
                         </div>
                     </div>
 
-                    <div className="row">
-                        <div className="col-75 text-center">
-                            <div>
-                                <h2 id="question" className="">
-                                    {readyTime
-                                        ? readyTime
-                                        : quiz.question + "(" + quiz?.answer?.length + "글자)"}
-                                </h2>
-                            </div>
-                        </div>
-                        <div className="col-25 text-center">
-                            <h3 id="quiz-count" className="text-center">
-                                {quizTime}
-                            </h3>
-                        </div>
-                    </div>
-
-                    <div className="row">
+                    <div className="row row-70">
                         <div className="col-75">
                             <div ref={chatWindow} id="chat" className="chat-window">
                                 {messages.map((message, index) => {
@@ -336,39 +323,45 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, socket, webRtcSocke
                             </form>
                         </div>
                         <div className="col-25 border-left">
-                            <ul id="participant-list" className="participant-window">
-                                
-                                <h3 className="text-center">참여자 목록</h3>
-                                {participant.map((item, index) => {
-                                    if (startQuiz) {
-                                        return (
-                                            <div key={index} className="participant-list">
-                                                <span className="participant">
-                                                    {item.userName} : {item.userScore}
-                                                </span>
-                                            </div>
-                                        );
-                                    } else {
-                                        return (
-                                            <div key={index} className="participant-list">
-                                                <span className="participant">{item.userName}</span>
-                                            </div>
-                                        );
-                                    }
-                                })}
-                                </ul>
-                             <label className="toggle-button">
+                            <div>
+                                <div id="participant-list" className="participant-window">
+                                    <h3 className="text-center">참여자 목록</h3>
+                                    {participant.map((item, index) => {
+                                        if (startQuiz) {
+                                            return (
+                                                <div key={index} className="participant-list">
+                                                    <span className="participant">
+                                                        {item.userName} : {item.userScore}
+                                                    </span>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={index} className="participant-list">
+                                                    <span className="participant">
+                                                        {item.userName}
+                                                    </span>
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div>
+                            </div>
+                            <div>
+                                <button onClick={() => disconnectRoom(socket)}>방 나가기</button>
+                            </div>
+                            <div>
+                                  <label className="toggle-button">
                                 <input role="switch" type="checkbox" onChange={WebRtcConnect}/>
                                 <span> RTC </span>
                             </label>
                             {remoteVideo ? remoteVideo.map((stream) => {
                                 return <video autoPlay ref={stream}></video>
                             }) : ""}
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <button onClick={() => disconnectRoom(socket)}>방 나가기</button>
             </>
         );
     } else {

@@ -5,7 +5,7 @@ import QuizRooms from "./QuizRooms";
 import ChatArea from "./ChatArea";
 import { API } from "../Api";
 
-const SearchArea = ({ userInfo, socket, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
+const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
     const SearchStart = () => {
         API.searchRooms(
             `roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
@@ -34,10 +34,8 @@ const SearchArea = ({ userInfo, socket, webRtcSocket, localVideoRef, localStream
     // 하위 컴포넌트 전달 - QuizRooms
     const [quizRoom, setQuizRoom] = useState([]);
 
-    // Room 선택 state
-    const [selectedRoom, setSelectedRoom] = useState("");
     // 선택한 Room 정보 state
-    const [selectedRoomInfo, setSelectedRoomInfo] = useState({roomName: "입장 전"});
+    const [selectedRoomInfo, setSelectedRoomInfo] = useState({ roomName: "입장 전" });
     // Room 선택 시 단일 Room 정보 API 요청(입장 요청)
     useEffect(() => {
         if (selectedRoom) {
@@ -57,56 +55,57 @@ const SearchArea = ({ userInfo, socket, webRtcSocket, localVideoRef, localStream
             .catch((error) => {
                 alert(error);
             });
-    }, []);
+    }, [selectedRoom]);
 
-    return (
-        <div>
-            <div className="SelectArea">
-                <div id="SearchForm">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        onChange={SearchRoomNameTrack}
-                        value={searchRoomName}
-                    />
+    if (selectedRoom) {
+        return (
+            <ChatArea
+                userInfo={userInfo}
+                selectedRoom={selectedRoom}
+                selectedRoomInfo={selectedRoomInfo}
+                setSelectedRoom={setSelectedRoom}
+                socket={socket}
+                webRtcSocket={webRtcSocket}
+                localStream={localStream}
+                localVideoRef={localVideoRef}
+                WebRtcConnect={WebRtcConnect}
+                toggleButton={toggleButton}
+            />
+        );
+    } else {
+        return (
+            <div>
+                <div className="SelectArea">
+                    <div id="SearchForm">
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            onChange={SearchRoomNameTrack}
+                            value={searchRoomName}
+                        />
 
-                    <button onClick={SearchStart}> Search </button>
-                    <button className="OptionButton" onClick={OptionToggle}>
-                        {" "}
-                        Option{" "}
-                    </button>
+                        <button onClick={SearchStart}> Search </button>
+                        <button className="OptionButton" onClick={OptionToggle}>
+                            {" "}
+                            Option{" "}
+                        </button>
+                    </div>
                 </div>
-            </div>
-            {option ? (
-                <OptionArea
-                    rating={rating}
-                    RatingChange={RatingChange}
-                    people={people}
-                    MaxPeopleChange={MaxPeopleChange}
-                    SelectStatus={SelectStatus}
-                />
-            ) : (
-                ``
-            )}
-            {selectedRoom ? (
-                <ChatArea
-                    userInfo={userInfo}
-                    selectedRoom={selectedRoom}
-                    selectedRoomInfo={selectedRoomInfo}
-                    setSelectedRoom={setSelectedRoom}
-                    socket={socket}
-                    webRtcSocket={webRtcSocket}
-                    localStream={localStream}
-                    localVideoRef={localVideoRef}
-                    WebRtcConnect={WebRtcConnect}
-                    toggleButton={toggleButton}
-                    
-                />
-            ) : (
+                {option ? (
+                    <OptionArea
+                        rating={rating}
+                        RatingChange={RatingChange}
+                        people={people}
+                        MaxPeopleChange={MaxPeopleChange}
+                        SelectStatus={SelectStatus}
+                    />
+                ) : (
+                    ``
+                )}
                 <QuizRooms quizRoom={quizRoom} setSelectedRoom={setSelectedRoom} />
-            )}
-        </div>
-    );
+            </div>
+        );
+    }
 };
 
 export default SearchArea;
