@@ -67,7 +67,6 @@ const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom, webRtcSoc
                 socket={socket}
                 webRtcSocket={webRtcSocket}
                 localStream={localStream}
-                localVideoRef={localVideoRef}
                 WebRtcConnect={WebRtcConnect}
                 toggleButton={toggleButton}
             />

@@ -19,7 +19,7 @@ function App() {
     useEffect(() => {
         const socketIo = io(process.env.REACT_APP_SERVER_URL);
         setSocket(socketIo);        
-        const webRtcSocketIo = io("https://socket.playqround.site/");
+        const webRtcSocketIo = io("http://localhost:3000");
         setWebRtcSocket(webRtcSocketIo);
         return () => {
             if (socket) {
@@ -50,7 +50,7 @@ function App() {
                     localVideoRef.current.muted = true;
                     localVideoRef.current.srcObject = stream;
                 }
-    
+                console.log(localVideoRef)
             } catch (error) {
                 console.log(error);
             }
@@ -60,11 +60,15 @@ function App() {
     }, [localStream])
 
     // web RTC 토글 버튼
-    const [toggleButton, setToggleButton] = useState(false);
+    const [toggleButton, setToggleButton] = useState(null);
     // console.log(toggleButton)
     
     const WebRtcConnect = () => {
-        setToggleButton(!toggleButton);
+        if( toggleButton === null){
+            setToggleButton(true);
+        } else {
+            setToggleButton(!toggleButton);
+        }
     }
 
     // login popup state control

@@ -1,8 +1,8 @@
 import "../css/ChatArea.css";
+import WebRtc from './WebRtc';
 import { useState, useRef, useEffect } from "react";
 
-const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, socket, webRtcSocket, localVideoRef, localStream, WebRtcConnect, toggleButton }) => {
-    const [connectStatus, setConnectStatus] = useState(false);
+const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, socket, webRtcSocket, localStream, WebRtcConnect, toggleButton }) => {
     // 음성 채팅방 연결
     const share = async() => {
         webRtcSocket.emit('join', selectedRoom);
@@ -41,11 +41,18 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
     
         // 상대 영상 & 비디오 추가
         const addStream = (data) => {
-            let videoArea = document.createElement("video");
-            videoArea.autoplay = true;
-            videoArea.srcObject = data.stream;
-            let container = document.getElementById("root");
-            container.appendChild(videoArea);
+            console.log("connect", data.stream)
+            console.log("connect - ", data.stream[0])
+            // console.log(data.stream)
+            // let videoArea = document.createElement("video");
+            // videoArea.autoplay = true;
+            // videoArea.srcObject = data.stream;
+            // console.log(videoArea.srcObject)
+            // let container = document.getElementById("root");
+            // container.appendChild(videoArea);
+            return (
+                <WebRtc remoteRef={data.stream}/>
+            )
         };
     
         // RTC socket
@@ -130,11 +137,9 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
     useEffect(() => {
         if (toggleButton){
             share();
-            setConnectStatus(true);
             console.log("연결 시도")
-        } else if (toggleButton === false && connectStatus){
+        } else if (toggleButton === false){
             webRtcSocket.emit("leaveRoom", selectedRoom);
-            setConnectStatus(false);
             console.log("종료")
         }
 
