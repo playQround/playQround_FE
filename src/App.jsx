@@ -59,13 +59,7 @@ function App() {
 
     }, [localStream])
 
-    // web RTC 토글 버튼
-    const [toggleButton, setToggleButton] = useState(false);
-    // console.log(toggleButton)
-    
-    const WebRtcConnect = () => {
-        setToggleButton(!toggleButton);
-    }
+   
 
     // login popup state control
     const [loginView, setLoginView] = useState(false);
@@ -81,7 +75,7 @@ function App() {
 
     // Room 선택 state
     const [selectedRoom, setSelectedRoom] = useState("");
-    console.log("app.jsx selectedRoom:", selectedRoom);
+    // console.log("app.jsx selectedRoom:", selectedRoom);
 
     // read cookie to check login or not
     const token = cookie.load("authorization");
@@ -127,8 +121,6 @@ function App() {
                         webRtcSocket={webRtcSocket}
                         localVideoRef={localVideoRef}
                         localStream={localStream}
-                        WebRtcConnect={WebRtcConnect}
-                        toggleButton={toggleButton}
                         selectedRoom={selectedRoom}
                         setSelectedRoom={setSelectedRoom}
                     />
