@@ -30,7 +30,6 @@ function App() {
             }
         };
     }, []);
-    console.log(socket)
 
     // web RTC 
     const localVideoRef = useRef();
