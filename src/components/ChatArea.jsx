@@ -2,14 +2,22 @@ import "../css/ChatArea.css";
 import WebRtc from "./WebRtc";
 import React, { useState, useRef, useEffect } from "react";
 
-const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, socket, webRtcSocket, localStream }) => {
+const ChatArea = ({
+    userInfo,
+    selectedRoom,
+    setSelectedRoom,
+    selectedRoomInfo,
+    socket,
+    webRtcSocket,
+    localStream,
+}) => {
     // 음성 채팅방 연결
-     // web RTC 토글 버튼
-     const [toggleButton, setToggleButton] = useState(false);
-     
-     const WebRtcConnect = () => {
-         setToggleButton(!toggleButton);
-     }
+    // web RTC 토글 버튼
+    const [toggleButton, setToggleButton] = useState(false);
+
+    const WebRtcConnect = () => {
+        setToggleButton(!toggleButton);
+    };
 
     // 방 나갈 때 socket 연결 끊기
     const disconnectRoom = (socket, webRtcSocket) => {
@@ -37,9 +45,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
         }
         // 방 입장 state를 true로 변경
         setEnteredRoom(true);
-        return (() => {
-
-        })
+        return () => {};
     }, []);
 
     // 채팅 목록
@@ -59,7 +65,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
     const [startQuiz, setStartQuiz] = useState(false);
 
     // 풀 퀴즈 숫자 정보
-    const [remainingQuizzes, setRemainingQuizzes] = useState(10);
+    const [remainingQuizzes, setRemainingQuizzes] = useState(2);
 
     // "quiz" 퀴즈 내용
     const [quiz, setQuiz] = useState({ question: "퀴즈 시작 전" });
@@ -73,14 +79,15 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
     // 채팅 창
     const chatWindow = useRef(null);
 
+    // 게임 종료 state
+    const [terminate, setTerminate] = useState(false);
+
     // 새 메시지가 도착하면, 스크롤을 아래로 이동
     useEffect(() => {
         if (chatWindow.current) {
             chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
         }
-        return (() => {
-
-        })
+        return () => {};
     }, [messages]);
 
     if (selectedRoom) {
@@ -90,16 +97,26 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
         socket.on("notice", (message) => setMessages([...messages, { notice: message }]));
 
         // client에서 message를 보내기 위한 함수
+        // 게임 시작 전/중/후 메시지 처리
         const sendMessage = () => {
-            socket.emit("message", {
-                room: selectedRoom,
-                message,
-                nickname,
-                userId: userInfo.userId,
-                answer: quiz.answer,
-                remainingQuizzes,
-                point: 1,
-            });
+            if (startQuiz) {
+                socket.emit("messageInGame", {
+                    room: selectedRoom,
+                    message,
+                    nickname,
+                    userId: userInfo.userId,
+                    answer: quiz.answer,
+                    remainingQuizzes,
+                    point: 1,
+                });
+            } else {
+                socket.emit("messageOutGame", {
+                    room: selectedRoom,
+                    message,
+                    nickname,
+                });
+            }
+
             // message 전송 후 input 창의 message를 초기화
             setMessage("");
         };
@@ -125,6 +142,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
         socket.on("quiz", (newQuiz) => setQuiz(newQuiz));
         socket.on("readyTime", (readyTime) => setReadyTime(readyTime));
         socket.on("quizTime", (quizTime) => setQuizTime(quizTime));
+        socket.on("end", () => setTerminate(!terminate));
 
         // // "quiz" 퀴즈 내용
         // const [quiz, setQuiz] = useState("");
@@ -134,7 +152,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
 
         // // "quizTime" 퀴즈 푸는 시간 카운트 다운
         // const [quizTime, setQuizTime] = useState(0);
-      
+
         // 콘솔 확인
         //console.log("message:", messages);
         //console.log("roomRecord:", roomRecord);
@@ -194,6 +212,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
                                     }
                                 })}
                             </div>
+
                             <form
                                 className="input-group"
                                 onSubmit={(event) => {
@@ -206,14 +225,18 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
                                     id="message-input"
                                     className="form-control"
                                     placeholder="채팅을 입력해주세요."
-                                    value={message}
+                                    value={terminate ? undefined : message}
                                     onChange={messageChangeHandler}
                                 />
                                 <div className="input-group-append">
                                     <button
-                                        className="btn btn-outline-secondary"
+                                        className={
+                                            terminate
+                                                ? "btn button-disabled"
+                                                : "btn btn-outline-secondary"
+                                        }
                                         type="button"
-                                        onClick={sendMessage}
+                                        onClick={terminate ? undefined : sendMessage}
                                     >
                                         전송
                                     </button>
@@ -226,7 +249,7 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
                                         type="button"
                                         onClick={startQuiz ? undefined : handleStartQuiz}
                                     >
-                                        {startQuiz? "진행 중": "퀴즈시작"}
+                                        {startQuiz ? "진행 중" : "퀴즈시작"}
                                     </button>
                                 </div>
                             </form>
@@ -257,18 +280,24 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
                                 </div>
                             </div>
                             <div>
-                                <button onClick={() => disconnectRoom(socket, webRtcSocket)}>방 나가기</button>
+                                <button onClick={() => disconnectRoom(socket, webRtcSocket)}>
+                                    방 나가기
+                                </button>
                             </div>
                             <div>
-                                  <label className="toggle-button">
-                                <input role="switch" type="checkbox" onClick={WebRtcConnect}/>
-                                <span> RTC </span>
-                                {toggleButton ? <WebRtc 
-                                                    localStream={localStream} 
-                                                    webRtcSocket={webRtcSocket}
-                                                    selectedRoom={selectedRoom}/> : ""}
-                            </label>
-                            
+                                <label className="toggle-button">
+                                    <input role="switch" type="checkbox" onClick={WebRtcConnect} />
+                                    <span> RTC </span>
+                                    {toggleButton ? (
+                                        <WebRtc
+                                            localStream={localStream}
+                                            webRtcSocket={webRtcSocket}
+                                            selectedRoom={selectedRoom}
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
+                                </label>
                             </div>
                         </div>
                     </div>
