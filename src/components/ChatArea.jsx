@@ -72,10 +72,27 @@ const ChatArea = ({
 
     // "readyTime" 퀴즈 시작 카운트 다운
     const [readyTime, setReadyTime] = useState("퀴즈 시작 전");
+    // 사용자 측 카운터
+    useEffect(() => {
+        if (readyTime > 0) {
+            const timer = setInterval(() => {
+                setReadyTime((prev) => prev - 1);
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [readyTime]);
 
     // "quizTime" 퀴즈 푸는 시간 카운트 다운
     const [quizTime, setQuizTime] = useState("카운트 다운");
-
+    // 사용자 측 카운터
+    useEffect(() => {
+        if (quizTime > 0) {
+            const timer = setInterval(() => {
+                setQuizTime((prev) => prev - 1);
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [quizTime]);
     // 채팅 창
     const chatWindow = useRef(null);
 
@@ -180,7 +197,7 @@ const ChatArea = ({
                                 : quiz.question + "(" + quiz?.answer?.length + "글자)"}
                         </div>
                         <div id="quiz-count" className="col-25 text-center">
-                            {quizTime}
+                            {readyTime? "퀴즈 시작 전입니다": quizTime}
                         </div>
                     </div>
 
