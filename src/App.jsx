@@ -30,6 +30,7 @@ function App() {
             }
         };
     }, []);
+    console.log(socket)
 
     // web RTC 
     const localVideoRef = useRef();
@@ -105,6 +106,7 @@ function App() {
                 <CreateRoomWindow
                     ViewCreateRoom={ViewCreateRoom}
                     setSelectedRoom={setSelectedRoom}
+                    socket={socket}
                 />
             ) : (
                 ""

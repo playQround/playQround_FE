@@ -13,7 +13,7 @@ const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom, webRtcSoc
             .then((response) => setQuizRoom(response.data.rooms))
             .catch((error) => alert(error));
     };
-
+    
     // 옵션 visible 트리거
     const [option, setOption] = useState(false);
     const OptionToggle = () => setOption(!option);
@@ -36,8 +36,11 @@ const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom, webRtcSoc
 
     // 선택한 Room 정보 state
     const [selectedRoomInfo, setSelectedRoomInfo] = useState({ roomName: "입장 전" });
+
+    
     // Room 선택 시 단일 Room 정보 API 요청(입장 요청)
     useEffect(() => {
+
         if (selectedRoom) {
             API.getRoom(selectedRoom)
                 .then((response) => {
@@ -45,17 +48,32 @@ const SearchArea = ({ userInfo, socket, selectedRoom, setSelectedRoom, webRtcSoc
                 })
                 .catch((error) => alert(error));
         }
+
     }, [selectedRoom]);
 
     useEffect(() => {
-        API.getRooms()
-            .then((response) => {
-                setQuizRoom(response.data.rooms);
-            })
-            .catch((error) => {
+        const GetRooms = async() => {
+            try{
+                const response = await API.getRooms();
+                setQuizRoom(response.data.rooms)
+            } catch (error) {
                 alert(error);
-            });
-    }, [selectedRoom]);
+            }
+        }
+
+        const RefreshRoom = async() => {
+            GetRooms();
+        }
+        
+        socket?.on("refreshRoom", RefreshRoom);
+        
+
+        GetRooms();
+        return (() => {
+            socket?.off("refreshRoom", RefreshRoom);
+        })
+
+    }, [selectedRoom, socket]);
 
     if (selectedRoom) {
         return (
