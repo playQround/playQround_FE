@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import cookie from "react-cookies";
 import SelectArea from "./components/SelectArea";
 import Users from "./components/Users";
@@ -19,7 +19,7 @@ function App() {
     useEffect(() => {
         const socketIo = io(process.env.REACT_APP_SERVER_URL);
         setSocket(socketIo);        
-        const webRtcSocketIo = io("https://api.playqround.site/");
+        const webRtcSocketIo = io("http://localhost:3000/");
         setWebRtcSocket(webRtcSocketIo);
         return () => {
             if (socket) {
@@ -58,8 +58,6 @@ function App() {
         getMedia();
 
     }, [localStream])
-
-   
 
     // login popup state control
     const [loginView, setLoginView] = useState(false);

@@ -7,8 +7,9 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
      // web RTC 토글 버튼
      const [toggleButton, setToggleButton] = useState(false);
      
-     const WebRtcConnect = () => {
-         setToggleButton(!toggleButton);
+     const WebRtcConnect = (event) => {
+        event.stopPropagation();
+        setToggleButton(!toggleButton);
      }
 
     // 방 나갈 때 socket 연결 끊기
@@ -171,7 +172,6 @@ const ChatArea = ({ userInfo, selectedRoom, setSelectedRoom, selectedRoomInfo, s
                             <div ref={chatWindow} id="chat" className="chat-window">
                                 {messages.map((message, index) => {
                                     if (typeof message === "object") {
-                                        console.log(message.notice);
                                         return (
                                             <div key={index} className="text-center">
                                                 <span className="chat-notice">
