@@ -12,12 +12,13 @@ const ChatArea = ({
     localStream,
 }) => {
     // 음성 채팅방 연결
-    // web RTC 토글 버튼
-    const [toggleButton, setToggleButton] = useState(false);
-
-    const WebRtcConnect = () => {
+     // web RTC 토글 버튼
+     const [toggleButton, setToggleButton] = useState(false);
+     
+     const WebRtcConnect = (event) => {
+        event.stopPropagation();
         setToggleButton(!toggleButton);
-    };
+     }
 
     // 방 나갈 때 socket 연결 끊기
     const disconnectRoom = (socket, webRtcSocket) => {
@@ -206,7 +207,6 @@ const ChatArea = ({
                             <div ref={chatWindow} id="chat" className="chat-window">
                                 {messages.map((message, index) => {
                                     if (typeof message === "object") {
-                                        console.log(message.notice);
                                         return (
                                             <div key={index} className="text-center">
                                                 <span className="chat-notice">

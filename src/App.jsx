@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import cookie from "react-cookies";
 import SelectArea from "./components/SelectArea";
 import Users from "./components/Users";
@@ -58,8 +58,6 @@ function App() {
         getMedia();
 
     }, [localStream])
-
-   
 
     // login popup state control
     const [loginView, setLoginView] = useState(false);
