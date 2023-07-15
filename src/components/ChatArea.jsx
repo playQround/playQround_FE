@@ -20,8 +20,8 @@ const ChatArea = ({
     };
 
     // 방 나갈 때 socket 연결 끊기
-    const disconnectRoom = (socket, webRtcSocket) => {
-        socket.emit("leaveRoom", { ...userInfo, room: selectedRoom });
+    const disconnectRoom = (socket) => {
+        socket.emit("leaveRoom", {userName: nickname, room: selectedRoom });
         setSelectedRoom("");
     };
 
@@ -65,7 +65,7 @@ const ChatArea = ({
     const [startQuiz, setStartQuiz] = useState(false);
 
     // 풀 퀴즈 숫자 정보
-    const [remainingQuizzes, setRemainingQuizzes] = useState(2);
+    const [remainingQuizzes, setRemainingQuizzes] = useState(10);
 
     // "quiz" 퀴즈 내용
     const [quiz, setQuiz] = useState({ question: "퀴즈 시작 전" });
@@ -153,7 +153,7 @@ const ChatArea = ({
             const newParticipant = JSON.parse(data);
             setParticipant([...newParticipant]);
             //console.log("new participant:", newParticipant);
-            socket.emit("participant", JSON.stringify(newParticipant));
+            //socket.emit("participant", JSON.stringify(newParticipant));
         });
         socket.on("startQuiz", () => setStartQuiz(!startQuiz));
         socket.on("quiz", (newQuiz) => setQuiz(newQuiz));
@@ -197,7 +197,7 @@ const ChatArea = ({
                                 : quiz.question + "(" + quiz?.answer?.length + "글자)"}
                         </div>
                         <div id="quiz-count" className="col-25 text-center">
-                            {readyTime? "퀴즈 시작 전입니다": quizTime}
+                            {readyTime ? "퀴즈 시작 전입니다" : quizTime}
                         </div>
                     </div>
 
@@ -206,7 +206,6 @@ const ChatArea = ({
                             <div ref={chatWindow} id="chat" className="chat-window">
                                 {messages.map((message, index) => {
                                     if (typeof message === "object") {
-                                        console.log(message.notice);
                                         return (
                                             <div key={index} className="text-center">
                                                 <span className="chat-notice">
