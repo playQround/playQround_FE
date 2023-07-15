@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "../css/QuizRoom.css";
 
 // 방 상태에 따라서 이름 분류

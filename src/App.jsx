@@ -105,6 +105,7 @@ function App() {
                 <CreateRoomWindow
                     ViewCreateRoom={ViewCreateRoom}
                     setSelectedRoom={setSelectedRoom}
+                    socket={socket}
                 />
             ) : (
                 ""
