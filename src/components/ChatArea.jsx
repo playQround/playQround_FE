@@ -12,36 +12,39 @@ const ChatArea = ({
     localStream,
 }) => {
     // 음성 채팅방 연결
-     // web RTC 토글 버튼
-     const [toggleButton, setToggleButton] = useState(false);
-     
-     const WebRtcConnect = (event) => {
+    // web RTC 토글 버튼
+    const [toggleButton, setToggleButton] = useState(false);
+
+    const WebRtcConnect = (event) => {
         event.stopPropagation();
         setToggleButton(!toggleButton);
-     }
+    };
 
     // 방 나갈 때 socket 연결 끊기
     const disconnectRoom = (socket) => {
-        socket.emit("leaveRoom", {userName: nickname, room: selectedRoom });
+        socket.emit("leaveRoom", { userName: nickname, room: selectedRoom });
         setSelectedRoom("");
     };
 
     // 방 입장 시 nickname anonymous인 경우 수정
     const [nickname, setNickname] = useState(userInfo.userName);
     useEffect(() => {
-        if (["anonymous"].includes(userInfo.userName)) {
+        if (userInfo.userName === "anonymous") {
             const userInput = prompt("닉네임을 입력해 주세요.");
             setNickname(userInput);
             // 비로그인 사용자 방 입장
             socket.emit("joinRoom", {
                 room: selectedRoom,
                 nickname: userInput,
+                // 익명유저의 userId는 Data.now와 랜덤 숫자 3자리를 통해 중복 방지
+                userId: Date.now().toString() + Math.floor(Math.random() * 100).toString(),
             });
         } else {
             // 로그인 사용자 방 입장
             socket.emit("joinRoom", {
                 room: selectedRoom,
                 nickname: nickname,
+                userId: userInfo.userId,
             });
         }
         // 방 입장 state를 true로 변경
