@@ -1,4 +1,5 @@
 import "../css/ChatArea.css";
+import GameResultWindow from "./GameResultWindow";
 import WebRtc from "./WebRtc";
 import React, { useState, useRef, useEffect } from "react";
 
@@ -198,6 +199,15 @@ const ChatArea = ({
         // 리턴할 jsx
         return (
             <>
+                {terminate ? (
+                    <GameResultWindow
+                        participant={participant}
+                        userId={userId}
+                        setSelectedRoom={setSelectedRoom}
+                    />
+                ) : (
+                    ""
+                )}
                 <div className="container-fluid">
                     <div id="room-id" className="row row-5">
                         <div className="col-100 room-id">[방 코드] {selectedRoom}</div>
