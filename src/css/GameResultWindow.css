@@ -1,0 +1,94 @@
+.ResultMain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ResultContent {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 30%;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    color: #7843e6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: 90%;
+}
+
+.ResultContent button {
+    width: 61%;
+    height: 40px;
+    margin-top: 10px;
+    font-weight: bold;
+    border: none;
+}
+
+@keyframes blink-effect {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+}
+
+.Oneself {
+    background-color: #7843e6;
+    color: whitesmoke;
+    animation: blink-effect 0.5s steps(3) infinite;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.OneselfRank {
+    text-decoration: red wavy underline;
+}
+
+.OneselfName {
+    text-decoration: red wavy underline;
+}
+
+.OneselfScore {
+    text-decoration: red wavy underline;
+}
+
+.Oneself {
+    background-color: #7843e6;
+    color: whitesmoke;
+    animation: blink-effect 0.5s steps(3) infinite;
+}
+
+.Others {
+    background-color: whitesmoke;
+    color: #7843e6;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.OthersRank {
+    text-decoration: blue wavy underline;
+}
+
+.OthersName {
+    text-decoration: blue wavy underline;
+}
+
+.OthersScore {
+    text-decoration: blue wavy underline;
+}
