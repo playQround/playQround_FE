@@ -168,33 +168,19 @@ const ChatArea = ({
         socket.on("participant", (data) => {
             const newParticipant = JSON.parse(data);
             setParticipant([...newParticipant]);
-            //console.log("new participant:", newParticipant);
-            //socket.emit("participant", JSON.stringify(newParticipant));
+            socket.emit("refreshRoom");
         });
-        socket.on("startQuiz", () => setStartQuiz(!startQuiz));
+        socket.on("startQuiz", () => {
+            setStartQuiz(!startQuiz);
+            socket.emit("refreshRoom");
+        });
         socket.on("quiz", (newQuiz) => setQuiz(newQuiz));
         socket.on("readyTime", (readyTime) => setReadyTime(readyTime));
         socket.on("quizTime", (quizTime) => setQuizTime(quizTime));
-        socket.on("end", () => setTerminate(!terminate));
-
-        // // "quiz" 퀴즈 내용
-        // const [quiz, setQuiz] = useState("");
-
-        // // "readyTime" 퀴즈 시작 카운트 다운
-        // const [readyTime, setReadyTime] = useState(0);
-
-        // // "quizTime" 퀴즈 푸는 시간 카운트 다운
-        // const [quizTime, setQuizTime] = useState(0);
-
-        // 콘솔 확인
-        //console.log("message:", messages);
-        //console.log("roomRecord:", roomRecord);
-        // console.log("startQuiz:", startQuiz);
-        // console.log("quiz:", quiz);
-        //console.log("remaining...", remainingQuizzes);
-        // console.log("readyTime:", readyTime);
-        // console.log("quizTime:", quizTime);
-        // console.log("participant:", participant);
+        socket.on("end", () => {
+            setTerminate(!terminate);
+            socket.emit("refreshRoom");
+        });
 
         // 리턴할 jsx
         return (
