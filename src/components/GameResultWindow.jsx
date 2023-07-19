@@ -1,7 +1,17 @@
 import "../css/GameResultWindow.css";
 
-function GameResultWindow({ participant, userId, setSelectedRoom }) {
-    const backToMain = () => setSelectedRoom("");
+function GameResultWindow({
+    socket,
+    participant,
+    userId,
+    setSelectedRoom,
+    selectedRoom,
+    nickname,
+}) {
+    const backToMain = () => {
+        socket.emit("leaveRoom", { userName: nickname, room: selectedRoom });
+        setSelectedRoom("");
+    };
     return (
         <>
             <div className="ResultMain">
