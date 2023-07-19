@@ -201,6 +201,9 @@ const ChatArea = ({
             <>
                 {terminate ? (
                     <GameResultWindow
+                        nickname={nickname}
+                        selectedRoom={selectedRoom}
+                        socket={socket}
                         participant={participant}
                         userId={userId}
                         setSelectedRoom={setSelectedRoom}
