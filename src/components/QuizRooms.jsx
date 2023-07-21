@@ -64,8 +64,7 @@ const QuizRooms = ({ quizRoom, setQuizRoom, socket, setSelectedRoom, selectedRoo
     }, [selectedRoom, refresh]);
     // refresh room
     socket?.on("refreshRoom", (message) => {
-        console.log(message);
-        setRefresh("refreshed");
+        setRefresh(message);
     });
 
     return (
