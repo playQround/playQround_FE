@@ -109,6 +109,37 @@ const ChatArea = ({
             return () => clearInterval(timer);
         }
     }, [quizTime]);
+
+    // 맞추는 시간에 따른 점수 변화
+    const [point, setPoint] = useState(5);
+    useEffect(() => setPoint(quizTime), [quizTime]);
+    // 풀이 시간이 줄어듦에 따라 힌트 추가
+    const QuizHint = () => {
+        if (quiz?.answer?.length >= 3 && quizTime <= 3) {
+            // 3초 이하 남았고, 답이 3자리 이상일 때 마지막 글자 오픈
+            const que = quiz?.question;
+            const ans = quiz?.answer;
+            return readyTime
+                ? readyTime
+                : `${que}(${ans[0]}${"O".repeat(ans.length - 2)}${ans?.[ans.length - 1]})`;
+        } else if (quiz?.answer?.length >= 3 && quizTime < 6) {
+            // 5초 미만 남았고, 답이 3자리수 이상일 때 첫글자 오픈
+            return readyTime
+                ? readyTime
+                : `${quiz.question}(${quiz?.answer?.[0]}${"O".repeat(quiz?.answer?.length - 1)})`;
+        } else if (quizTime > 5) {
+            // 5초 초과 남았을 때는 자리수 힌트만 제공
+            return readyTime ? readyTime : `${quiz.question}(${"O".repeat(quiz?.answer?.length)})`;
+        } else if (quiz?.answer?.length < 3 && quizTime <= 3) {
+            // 3초 이하 남았고, 답이 2자리 이하일 때 첫글자 오픈
+            return readyTime
+                ? readyTime
+                : `${quiz.question}(${quiz?.answer?.[0]}${"O".repeat(quiz?.answer?.length - 1)})`;
+        } else {
+            return readyTime ? readyTime : `${quiz.question}(${"O".repeat(quiz?.answer?.length)})`;
+        }
+    };
+
     // 채팅 창
     const chatWindow = useRef(null);
 
@@ -131,7 +162,7 @@ const ChatArea = ({
 
         // client에서 message를 보내기 위한 함수
         // 게임 시작 전/중/후 메시지 처리
-        const sendMessage = () => {
+        const sendMessage = (point) => {
             if (startQuiz) {
                 socket.emit("messageInGame", {
                     room: selectedRoom,
@@ -140,7 +171,7 @@ const ChatArea = ({
                     userId,
                     answer: quiz.answer,
                     remainingQuizzes,
-                    point: 1,
+                    point: point,
                 });
             } else {
                 socket.emit("messageOutGame", {
@@ -206,9 +237,7 @@ const ChatArea = ({
                     </div>
                     <div className="row row-5">
                         <div id="question" className="col-75 text-center">
-                            {readyTime
-                                ? readyTime
-                                : quiz.question + "(" + quiz?.answer?.length + "글자)"}
+                            <QuizHint />
                         </div>
                         <div id="quiz-count" className="col-25 text-center">
                             {readyTime ? "퀴즈 시작 전입니다" : quizTime}
@@ -247,7 +276,7 @@ const ChatArea = ({
                                 className="input-group"
                                 onSubmit={(event) => {
                                     event.preventDefault();
-                                    sendMessage();
+                                    sendMessage(point);
                                 }}
                             >
                                 <input
@@ -256,7 +285,7 @@ const ChatArea = ({
                                     className="form-control"
                                     placeholder="채팅을 입력해주세요."
                                     value={terminate ? undefined : message}
-                                    onChange={messageChangeHandler}
+                                    onChange={terminate ? undefined : messageChangeHandler}
                                 />
                                 <div className="input-group-append">
                                     <button
