@@ -13,6 +13,9 @@ const SearchArea = ({
     webRtcSocket,
     localStream,
 }) => {
+    // QuizRooms
+    const [quizRoom, setQuizRoom] = useState([]);
+
     const SearchStart = () => {
         API.searchRooms(
             `roomName=${searchRoomName}&roomStatus=${selectRoomStatus}&maxPeople=${people}&cutRating=${rating}`
@@ -38,9 +41,6 @@ const SearchArea = ({
     const [rating, setRating] = useState(0);
     const RatingChange = (event) => setRating(event.target.value);
 
-    // 하위 컴포넌트 전달 - QuizRooms
-    const [quizRoom, setQuizRoom] = useState([]);
-
     // 선택한 Room 정보 state
     const [selectedRoomInfo, setSelectedRoomInfo] = useState({ roomName: "입장 전" });
 
@@ -54,25 +54,6 @@ const SearchArea = ({
                 .catch((error) => alert(error));
         }
     }, [selectedRoom]);
-
-    useEffect(() => {
-        const GetRooms = async () => {
-            try {
-                const response = await API.getRooms();
-                setQuizRoom(response.data.rooms);
-            } catch (error) {
-                alert(error);
-            }
-        };
-        const RefreshRoom = async () => {
-            GetRooms();
-        };
-        socket?.on("refreshRoom", RefreshRoom);
-        GetRooms();
-        return () => {
-            socket?.off("refreshRoom", RefreshRoom);
-        };
-    }, [selectedRoom, socket]);
 
     if (selectedRoom) {
         return (
@@ -116,7 +97,13 @@ const SearchArea = ({
                 ) : (
                     ``
                 )}
-                <QuizRooms quizRoom={quizRoom} setSelectedRoom={setSelectedRoom} />
+                <QuizRooms
+                    quizRoom={quizRoom}
+                    setQuizRoom={setQuizRoom}
+                    socket={socket}
+                    setSelectedRoom={setSelectedRoom}
+                    selectedRoom={selectedRoom}
+                />
             </div>
         );
     }

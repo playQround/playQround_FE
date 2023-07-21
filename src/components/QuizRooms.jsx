@@ -1,49 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { API } from "../Api";
 import "../css/QuizRoom.css";
 
 // 방 상태에 따라서 이름 분류
 const RoomStatusCheck = ({ status }) => {
-    let className ;
+    let className;
     let roomStatusToString;
 
     if (status === 0) {
         roomStatusToString = "Waiting";
-        className = "Waiting"
-
-    } else if (status === 1){
+        className = "Waiting";
+    } else if (status === 1) {
         roomStatusToString = "Playing";
-        className = "Playing"
-
+        className = "Playing";
     } else {
         roomStatusToString = "Done";
-        className = "Done"
+        className = "Done";
     }
-        
-    return <p className={className}> {roomStatusToString} </p>
-};
 
+    return <p className={className}> {roomStatusToString} </p>;
+};
 
 const EachRoom = ({ socketRoom, name, status, now, max, setSelectedRoom }) => {
     let peopleInRoom = "Roompeople";
-    if (max === now ){
+    if (max === now) {
         peopleInRoom = "RoompeopleMax";
     }
 
     const EnteringRoom = () => {
-        if (max === now){
+        if (max === now) {
             alert("최대 인원에 도달했습니다.");
-            return 
-
+            return;
         } else if (status === 1) {
-            alert("진행 중인 방에 입장할 수 없습니다.")
-            return 
-
-        } else if (status === 2){
-            alert("종료된 방 입니다.")
-            return 
+            alert("진행 중인 방에 입장할 수 없습니다.");
+            return;
+        } else if (status === 2) {
+            alert("종료된 방 입니다.");
+            return;
         }
         return setSelectedRoom(socketRoom);
-    }
+    };
 
     return (
         <div className="QuizRoom" onClick={() => EnteringRoom()}>
@@ -57,7 +53,21 @@ const EachRoom = ({ socketRoom, name, status, now, max, setSelectedRoom }) => {
     );
 };
 
-const QuizRooms = ({ quizRoom, setSelectedRoom }) => {
+const QuizRooms = ({ quizRoom, setQuizRoom, socket, setSelectedRoom, selectedRoom }) => {
+    // refresh
+    const [refresh, setRefresh] = useState("");
+    // refresh API axios call
+    useEffect(() => {
+        API.getRooms().then((response) => {
+            setQuizRoom(response.data.rooms);
+        });
+    }, [selectedRoom, refresh]);
+    // refresh room
+    socket?.on("refreshRoom", (message) => {
+        console.log(message);
+        setRefresh("refreshed");
+    });
+
     return (
         <div className="QuizzesRoomArea">
             {quizRoom.map((item, index) => {
@@ -70,10 +80,11 @@ const QuizRooms = ({ quizRoom, setSelectedRoom }) => {
                         now={item.nowPeople}
                         max={item.maxPeople}
                         setSelectedRoom={setSelectedRoom}
-                    />);
+                    />
+                );
             })}
         </div>
-    )
+    );
 };
 
 export default QuizRooms;
