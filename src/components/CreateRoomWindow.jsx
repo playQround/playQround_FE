@@ -39,7 +39,6 @@ const CreateRoomWindow = ({ ViewCreateRoom, setSelectedRoom, socket }) => {
 
         API.createRoom(data)
             .then((response) => {
-                // const next = response.data.roomId
                 alert(`방을 만들었습니다. (키: ${response.data.roomId})`);
                 ViewCreateRoom();
                 setSelectedRoom(response.data.roomId);

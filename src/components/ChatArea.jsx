@@ -187,7 +187,6 @@ const ChatArea = ({
 
         // "startQuiz" 퀴즈 시작
         const handleStartQuiz = () => {
-            console.log("clicked handle start quiz");
             socket.emit("startQuiz", {
                 room: selectedRoom,
                 nickname,
@@ -199,18 +198,15 @@ const ChatArea = ({
         socket.on("participant", (data) => {
             const newParticipant = JSON.parse(data);
             setParticipant([...newParticipant]);
-            socket.emit("refreshRoom");
         });
         socket.on("startQuiz", () => {
             setStartQuiz(!startQuiz);
-            socket.emit("refreshRoom");
         });
         socket.on("quiz", (newQuiz) => setQuiz(newQuiz));
         socket.on("readyTime", (readyTime) => setReadyTime(readyTime));
         socket.on("quizTime", (quizTime) => setQuizTime(quizTime));
         socket.on("end", () => {
             setTerminate(!terminate);
-            socket.emit("refreshRoom");
         });
 
         // 리턴할 jsx
