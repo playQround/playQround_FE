@@ -19,7 +19,7 @@ function App() {
     useEffect(() => {
         const socketIo = io(process.env.REACT_APP_SERVER_URL);
         setSocket(socketIo);
-        const webRtcSocketIo = io("https://socket.playqround.site/");
+        const webRtcSocketIo = io(process.env.REACT_APP_WEBRTC);
         setWebRtcSocket(webRtcSocketIo);
         return () => {
             if (socket) {

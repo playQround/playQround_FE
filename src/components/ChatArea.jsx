@@ -81,7 +81,7 @@ const ChatArea = ({
     const [startQuiz, setStartQuiz] = useState(false);
 
     // 풀 퀴즈 숫자 정보
-    const [remainingQuizzes, setRemainingQuizzes] = useState(10);
+    const [remainingQuizzes, setRemainingQuizzes] = useState(process.env.REACT_APP_QUIZ_NUM);
 
     // "quiz" 퀴즈 내용
     const [quiz, setQuiz] = useState({ question: "퀴즈 시작 전" });
