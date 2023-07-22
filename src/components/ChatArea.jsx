@@ -59,16 +59,11 @@ const ChatArea = ({
                 userId: userInfo.userId,
             });
         }
-        // 방 입장 state를 true로 변경
-        setEnteredRoom(true);
         return () => {};
-    }, []);
+    }, [selectedRoom]);
 
     // 채팅 목록
     const [messages, setMessages] = useState([]);
-
-    // 방 입장 state
-    const [enteredRoom, setEnteredRoom] = useState(false);
 
     // 참여자 목록 state
     const [participant, setParticipant] = useState([]);

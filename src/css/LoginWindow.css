@@ -16,8 +16,18 @@
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    width: 30%;
-    height: 90%;
+    padding: 20px;
+    width: 25%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    color: #7843e6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: 100%;
+    border-radius: 10px;
 }
 
 .LoginContent form {
@@ -29,8 +39,8 @@
 
 .LoginBox input {
     width: 60%;
-    height: 40px;
-    margin-top: 10px
+    height: 15px;
+    margin-top: 10px;
 }
 
 .LoginContent button {
@@ -41,17 +51,24 @@
     border: none;
 }
 
-.LoginContent .Submit {
-    background-color: #0A62D0;
-    color: whitesmoke;
+.Buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
-.LoginContent .SignIn {
+.Submit {
     background-color: #7843e6;
-    color: whitesmoke;
+    color: #fff;
+    border-radius: 4px;
 }
-
-.LoginContent .Cancel {
-    background-color: red;
-    color: whitesmoke;
+.SignUp {
+    background-color: #ffe180;
+    color: #000;
+    border-radius: 4px;
+}
+.Cancel {
+    background-color: #ccc;
+    color: #000;
+    border-radius: 4px;
 }

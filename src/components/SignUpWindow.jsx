@@ -49,15 +49,28 @@ const SignUpWindow = ({ ViewSignUp }) => {
                 <h2> Sign Up </h2>
 
                 <form className="SignUpBox" onSubmit={TrySignUp}>
-                    <input type="text" placeholder="E-mail" value={email} onChange={ChangeEmail} />
+                    <input
+                        type="text"
+                        placeholder="E-mail"
+                        value={email}
+                        onChange={ChangeEmail}
+                        className="FormInput"
+                    />
 
-                    <input type="text" placeholder="userName" value={name} onChange={ChangeName} />
+                    <input
+                        type="text"
+                        placeholder="userName"
+                        value={name}
+                        onChange={ChangeName}
+                        className="FormInput"
+                    />
 
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={ChangePassword}
+                        className="FormInput"
                     />
                     {password !== "" ? <PasswordChecker password={password} /> : ""}
 
@@ -66,20 +79,20 @@ const SignUpWindow = ({ ViewSignUp }) => {
                         placeholder="Confirm Password"
                         value={password2}
                         onChange={ChangePassword2}
+                        className="FormInput"
                     />
                     {password2 !== "" ? (
                         <PasswordChecker2 password={password} password2={password2} />
                     ) : (
                         ""
                     )}
-
-                    <button className="Submit"> Submit </button>
+                    <div className="ButtonContainer">
+                        <button className="SubmitButton"> Submit </button>
+                        <button className="CancelButton" onClick={ViewSignUp}>
+                            Cancel
+                        </button>
+                    </div>
                 </form>
-
-                <button className="Cancel" onClick={ViewSignUp}>
-                    {" "}
-                    Cancel{" "}
-                </button>
             </div>
         </div>
     );

@@ -53,16 +53,14 @@ const CreateRoomWindow = ({ ViewCreateRoom, setSelectedRoom, socket }) => {
                 <h2 className="CreateRoomTitle">CreateRoom</h2>
 
                 <form className="CreateRoomBox" onSubmit={CreateRoom}>
-                    <label className="FormLabel">
-                        방 이름
-                        <input
-                            type="text"
-                            placeholder="방 이름"
-                            value={roomName}
-                            onChange={ChangeRoomName}
-                            className="FormInput"
-                        />
-                    </label>
+                    <label className="FormLabel">방 이름</label>
+                    <input
+                        type="text"
+                        placeholder="방 이름"
+                        value={roomName}
+                        onChange={ChangeRoomName}
+                        className="FormInput"
+                    />
 
                     <label className="FormLabel">최대 인원</label>
                     <input
@@ -81,16 +79,7 @@ const CreateRoomWindow = ({ ViewCreateRoom, setSelectedRoom, socket }) => {
                         onChange={ChangeCutRating}
                         className="FormInput"
                     />
-
-                    <label className="FormLabel">
-                        <input
-                            type="checkbox"
-                            value={roomPublic}
-                            onClick={ChangeRoomPublic}
-                            className="FormCheckbox"
-                        />
-                        비밀 방
-                    </label>
+                    
                     <div className="ButtonContainer">
                         <button className="SubmitButton">Create</button>
                         <button className="CancelButton" onClick={ViewCreateRoom}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { API } from "../Api";
 import "../css/QuizRoom.css";
 
@@ -56,17 +56,16 @@ const EachRoom = ({ socketRoom, name, status, now, max, setSelectedRoom }) => {
 const QuizRooms = ({ quizRoom, setQuizRoom, socket, setSelectedRoom, selectedRoom }) => {
     // refresh API axios call
     useEffect(() => {
-        const refreshRoom = async() => {
+        const refreshRoom = async () => {
             const response = await API.getRooms();
             setQuizRoom(response.data.rooms);
-        }
+        };
         socket?.on("refreshRoom", refreshRoom);
         refreshRoom();
-        return (() => {
+        return () => {
             socket?.off("refreshRoom", refreshRoom);
-        });
-
-    }, [socket]);
+        };
+    }, [socket, setQuizRoom]);
 
     return (
         <div className="QuizzesRoomArea">
