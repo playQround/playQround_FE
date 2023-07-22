@@ -32,7 +32,7 @@ const SearchArea = ({
     const SearchRoomNameTrack = (event) => setSearchRoomName(event.target.value);
 
     // 하위 컴포넌트로 값 전달 - option
-    const [selectRoomStatus, setSelectedRoomStatus] = useState("");
+    const [selectRoomStatus, setSelectedRoomStatus] = useState("3");
     const SelectStatus = (event) => setSelectedRoomStatus(event.target.value);
 
     const [people, setPeople] = useState(0);
