@@ -50,28 +50,11 @@
 
 .Oneself {
     background-color: #7843e6;
+    font-size: 16px;
     color: whitesmoke;
     animation: blink-effect 0.5s steps(3) infinite;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.OneselfRank {
-    text-decoration: red wavy underline;
-}
-
-.OneselfName {
-    text-decoration: red wavy underline;
-}
-
-.OneselfScore {
-    text-decoration: red wavy underline;
-}
-
-.Oneself {
-    background-color: #7843e6;
-    color: whitesmoke;
-    animation: blink-effect 0.5s steps(3) infinite;
 }
 
 .Others {
@@ -81,14 +64,7 @@
     margin-bottom: 5px;
 }
 
-.OthersRank {
-    text-decoration: blue wavy underline;
-}
-
-.OthersName {
-    text-decoration: blue wavy underline;
-}
-
-.OthersScore {
-    text-decoration: blue wavy underline;
+.medal {
+    height: 25px;
+    align-self: center;
 }

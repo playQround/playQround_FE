@@ -81,7 +81,7 @@ const ChatArea = ({
     const [startQuiz, setStartQuiz] = useState(false);
 
     // 풀 퀴즈 숫자 정보
-    const [remainingQuizzes, setRemainingQuizzes] = useState(10);
+    const [remainingQuizzes, setRemainingQuizzes] = useState(process.env.REACT_APP_QUIZ_NUM);
 
     // "quiz" 퀴즈 내용
     const [quiz, setQuiz] = useState({ question: "퀴즈 시작 전" });
@@ -115,29 +115,98 @@ const ChatArea = ({
     useEffect(() => setPoint(quizTime), [quizTime]);
     // 풀이 시간이 줄어듦에 따라 힌트 추가
     const QuizHint = () => {
-        if (quiz?.answer?.length >= 3 && quizTime <= 3) {
-            // 3초 이하 남았고, 답이 3자리 이상일 때 마지막 글자 오픈
-            const que = quiz?.question;
-            const ans = quiz?.answer;
-            return readyTime
-                ? readyTime
-                : `${que}(${ans[0]}${"O".repeat(ans.length - 2)}${ans?.[ans.length - 1]})`;
-        } else if (quiz?.answer?.length >= 3 && quizTime < 6) {
-            // 5초 미만 남았고, 답이 3자리수 이상일 때 첫글자 오픈
-            return readyTime
-                ? readyTime
-                : `${quiz.question}(${quiz?.answer?.[0]}${"O".repeat(quiz?.answer?.length - 1)})`;
-        } else if (quizTime > 5) {
-            // 5초 초과 남았을 때는 자리수 힌트만 제공
-            return readyTime ? readyTime : `${quiz.question}(${"O".repeat(quiz?.answer?.length)})`;
-        } else if (quiz?.answer?.length < 3 && quizTime <= 3) {
-            // 3초 이하 남았고, 답이 2자리 이하일 때 첫글자 오픈
-            return readyTime
-                ? readyTime
-                : `${quiz.question}(${quiz?.answer?.[0]}${"O".repeat(quiz?.answer?.length - 1)})`;
+        const remaining = `(${remainingQuizzes}/${process.env.REACT_APP_QUIZ_NUM}) `;
+        const question = quiz?.question;
+        const answer = quiz?.answer ? quiz.answer : "퀴즈 시작 전";
+        let hint;
+
+        const getInitialSound = (text) => {
+            const initialSound = [
+                "ㄱ",
+                "ㄲ",
+                "ㄴ",
+                "ㄷ",
+                "ㄸ",
+                "ㄹ",
+                "ㅁ",
+                "ㅂ",
+                "ㅃ",
+                "ㅅ",
+                "ㅆ",
+                "ㅇ",
+                "ㅈ",
+                "ㅉ",
+                "ㅊ",
+                "ㅋ",
+                "ㅌ",
+                "ㅍ",
+                "ㅎ",
+            ];
+            let result = "";
+
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                if (charCode < 0xac00 || charCode > 0xd7a3) {
+                    result += text[i]; // 한글이 아닐 경우 그대로 추가
+                } else {
+                    result += initialSound[Math.floor((charCode - 0xac00) / (21 * 28))];
+                }
+            }
+
+            return result;
+        };
+        const initials = getInitialSound(answer);
+
+        if (answer.length > 2) {
+            if (quizTime < 3) {
+                hint = `(힌트: ${initials})`;
+            } else if (quizTime < 5) {
+                hint = `(힌트: ${answer[0]}${"O".repeat(answer?.length - 2)}${
+                    answer[answer?.length - 1]
+                })`;
+            } else if (quizTime < 10) {
+                hint = `(힌트: ${answer[0]}${"O".repeat(answer?.length - 1)})`;
+            } else if (quizTime < 15) {
+                hint = `(힌트: ${"O".repeat(answer?.length)})`;
+            } else {
+                hint = "";
+            }
         } else {
-            return readyTime ? readyTime : `${quiz.question}(${"O".repeat(quiz?.answer?.length)})`;
+            if (quizTime < 2) {
+                hint = `(힌트: ${"O".repeat(answer?.length)})`;
+            } else if (quizTime < 3) {
+                hint = `(힌트: ${initials})`;
+            } else if (quizTime < 4) {
+                hint = `(힌트: ${"O".repeat(answer?.length)})`;
+            } else if (quizTime < 5) {
+                hint = `(힌트: ${initials})`;
+            } else if (quizTime < 10) {
+                hint = `(힌트: ${"O".repeat(answer?.length)})`;
+            } else {
+                hint = "";
+            }
         }
+
+        return (
+            <>
+                <span className="remaining">{remaining}</span>
+                <span className="quiz">{readyTime ? readyTime : question}</span>
+                <span className="hint">{hint}</span>
+            </>
+        );
+    };
+
+    const Counter = () => {
+        let countMessage = readyTime ? "퀴즈 시작 전입니다" : quizTime;
+        let counterClass;
+        if (quizTime <= 5) {
+            counterClass = "count-emergency";
+        } else if (quizTime <= 10) {
+            counterClass = "count-urgent";
+        } else {
+            counterClass = "count-normal";
+        }
+        return <span className={counterClass}>{countMessage}</span>;
     };
 
     // 채팅 창
@@ -240,7 +309,7 @@ const ChatArea = ({
                             <QuizHint />
                         </div>
                         <div id="quiz-count" className="col-25 text-center">
-                            {readyTime ? "퀴즈 시작 전입니다" : quizTime}
+                            <Counter />
                         </div>
                     </div>
 
@@ -295,7 +364,7 @@ const ChatArea = ({
                                                 : "btn btn-outline-secondary"
                                         }
                                         type="button"
-                                        onClick={terminate ? undefined : sendMessage}
+                                        onClick={terminate ? undefined : () => sendMessage(point)}
                                     >
                                         전송
                                     </button>

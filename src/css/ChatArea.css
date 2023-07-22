@@ -30,6 +30,42 @@
     max-width: 25%;
 }
 
+.quiz {
+    font-size: large;
+    font-weight: 700;
+    color: #7843e6;
+}
+
+.remaining {
+    font-size: medium;
+    font-weight: 600;
+    color: grey;
+}
+
+.hint {
+    font-size: medium;
+    font-weight: 600;
+    color: red;
+}
+
+.count-normal {
+    font-size: 100%;
+    font-weight: 600;
+    color: #7843e6;
+}
+
+.count-urgent {
+    font-size: x-large;
+    font-weight: 1200;
+    color: #7843e6;
+}
+
+.count-emergency {
+    font-size: xx-large;
+    font-weight: 2000;
+    color: red;
+}
+
 .input-group {
     display: flex;
 }
