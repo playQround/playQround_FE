@@ -54,18 +54,19 @@ const EachRoom = ({ socketRoom, name, status, now, max, setSelectedRoom }) => {
 };
 
 const QuizRooms = ({ quizRoom, setQuizRoom, socket, setSelectedRoom, selectedRoom }) => {
-    // refresh
-    const [refresh, setRefresh] = useState("");
     // refresh API axios call
     useEffect(() => {
-        API.getRooms().then((response) => {
+        const refreshRoom = async() => {
+            const response = await API.getRooms();
             setQuizRoom(response.data.rooms);
+        }
+        socket?.on("refreshRoom", refreshRoom);
+        refreshRoom();
+        return (() => {
+            socket?.off("refreshRoom", refreshRoom);
         });
-    }, [selectedRoom, refresh]);
-    // refresh room
-    socket?.on("refreshRoom", (message) => {
-        setRefresh(message);
-    });
+
+    }, [socket]);
 
     return (
         <div className="QuizzesRoomArea">

@@ -97,7 +97,6 @@ function App() {
                         userId: decodeJwt(token).userId,
                     };
                     setUserInfo(updatedUserInfo);
-                    console.log(updatedUserInfo); // log here
                 })
                 .catch((error) => console.log("error", error));
         }
