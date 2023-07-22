@@ -16,8 +16,17 @@
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    width: 30%;
-    height: 90%;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    color: #7843e6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: 100%;
+    border-radius: 10px;
 }
 
 .SignUpContent form {
@@ -28,21 +37,21 @@
 }
 
 .SignUpBox input {
-    width: 60%;
-    height: 40px;
-    margin-top: 10px
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.SignUpContent button {
-    width: 61%;
-    height: 40px;
-    margin-top: 10px;
-    font-weight: bold;
-    border: none;
+.FormInput {
+    width: 250px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
 }
 
 .SignUpContent .Submit {
-    background-color: #0A62D0;
+    background-color: #0a62d0;
     color: whitesmoke;
 }
 
@@ -54,4 +63,20 @@
 .SignUpContent .Cancel {
     background-color: red;
     color: whitesmoke;
+}
+
+.ButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.SubmitButton {
+    background-color: #7843e6;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.CancelButton {
+    background-color: #ccc;
+    color: #000;
 }

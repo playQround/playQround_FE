@@ -34,9 +34,9 @@ const LoginWindow = ({ ViewLogin, ViewSignUp }) => {
     };
 
     const LoginToSignUp = () => {
-        ViewLogin()
-        ViewSignUp()
-    }
+        ViewLogin();
+        ViewSignUp();
+    };
 
     return (
         <div className="LoginMain">
@@ -44,18 +44,34 @@ const LoginWindow = ({ ViewLogin, ViewSignUp }) => {
                 <h2> Sign In </h2>
 
                 <form className="LoginBox" onSubmit={RequestLogin}>
-                    <input type="text" placeholder="E-mail" value={email} onChange={ChangeEmail} />
+                    <input
+                        type="text"
+                        placeholder="E-mail"
+                        value={email}
+                        onChange={ChangeEmail}
+                        className="FormInput"
+                    />
+
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={ChangePassword}
+                        className="FormInput"
                     />
                     <button className="Submit"> Submit </button>
                 </form>
 
-                <button className="SignIn" onClick={LoginToSignUp}> Sign Up </button>
-                <button className="Cancel" onClick={ViewLogin}>Cancel</button>
+                <div className="Buttons">
+                    <button className="SignUp" onClick={LoginToSignUp}>
+                        Sign Up
+                    </button>
+                </div>
+                <div className="Buttons">
+                    <button className="Cancel" onClick={ViewLogin}>
+                        Cancel
+                    </button>
+                </div>
             </div>
         </div>
     );
