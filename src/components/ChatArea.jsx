@@ -185,7 +185,7 @@ const ChatArea = ({
 
         return (
             <>
-                <span className="remaining">{remaining}</span>
+                <span className="remaining">{readyTime ? "" : remaining}</span>
                 <span className="quiz">{readyTime ? readyTime : question}</span>
                 <span className="hint">{hint}</span>
             </>
