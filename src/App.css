@@ -35,7 +35,7 @@ h1 {
 }
 
 .Area1 {
-    width: 85%;
+    width: 80%;
     height: 100%;
     overflow-y: scroll;
     /* border: 1px solid black; */
@@ -57,7 +57,7 @@ h1 {
 }
 
 .Area2 {
-    width: 15%;
+    width: 20%;
     height: 100%;
     /* border: 1px solid black; */
     background-color: #ffe180;

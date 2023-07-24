@@ -27,3 +27,69 @@
     transform: scale(1.1);
     font-weight: bold;
 }
+
+.RankingTitle {
+    font-size: large;
+    font-weight: bold;
+    color: #7843e6;
+    margin-top: 20px;
+}
+
+.RankingClass {
+    font-size: medium;
+    font-weight: bold;
+    color: #7843e6;
+    margin-top: 20px;
+}
+
+.RankingDisplay {
+    margin-top: 20px;
+}
+
+.RankingDisplay,
+.RankingDisplay-transition {
+    transition: opacity 0.25s ease-in-out;
+    opacity: 0;
+}
+
+.RankingDisplay-transition {
+    margin-top: 20px;
+    opacity: 1;
+}
+
+.Ranking {
+    text-align: center;
+}
+
+@keyframes blink-effect {
+    0%,
+    100% {
+        color: blue;
+    }
+    50% {
+        color: red;
+    }
+}
+
+.Oneself-main {
+    font-size: 15px;
+    animation: blink-effect 1s steps(10) infinite;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.Others-main {
+    color: #7843e6;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.medal {
+    height: 25px;
+    align-self: center;
+}
+
+.Display {
+    margin-left: 10px;
+    margin-right: 10px;
+}

@@ -37,6 +37,7 @@ function GameResultWindow({
                                             src={iconSrc}
                                             alt={`Rank ${player[0] + 1}`}
                                         />
+                                        {player[0] + 1}등&nbsp;&nbsp;&nbsp;
                                         {player[1].userName} 님&nbsp;&nbsp;&nbsp;
                                         {player[1].userScore}점
                                     </div>
@@ -49,8 +50,9 @@ function GameResultWindow({
                                             src={iconSrc}
                                             alt={`Rank ${player[0] + 1}`}
                                         />
-                                        {player[0] + 1}등&nbsp;&nbsp;&nbsp;{player[1].userName}
-                                        님&nbsp;&nbsp;&nbsp;{player[1].userScore}점
+                                        {player[0] + 1}등&nbsp;&nbsp;&nbsp;
+                                        {player[1].userName}님&nbsp;&nbsp;&nbsp;
+                                        {player[1].userScore}점
                                     </div>
                                 );
                             }

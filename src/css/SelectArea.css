@@ -22,7 +22,7 @@
 #SearchForm button {
   height: 100%;
   margin-right: 10px;
-  width: 80px;
+  width: 10%;
   font-size: 100%;
   font-weight: bold;
   background-color: #FFE180 ;
@@ -38,7 +38,7 @@
 #SearchForm .OptionButton {
   height: 100%;
   margin-right: 10px;
-  width: 80px;
+  width: 10%;
   font-size: 100%;
   color: white;
   background-color: gray;

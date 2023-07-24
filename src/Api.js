@@ -28,4 +28,7 @@ export const API = {
     signIn: (body) => api.post("/auth/signin", body),
     // 회원정보
     getUserInfo: (headers) => api.get("/users/info", { headers }),
+
+    // 순위와 업적 조회
+    getUserRanking: (item, rank) => api.get(`/users/rank/${item}/${rank}`),
 };
