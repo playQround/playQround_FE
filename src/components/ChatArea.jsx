@@ -110,7 +110,8 @@ const ChatArea = ({
     useEffect(() => setPoint(quizTime), [quizTime]);
     // 풀이 시간이 줄어듦에 따라 힌트 추가
     const QuizHint = () => {
-        const remaining = `(${remainingQuizzes}/${process.env.REACT_APP_QUIZ_NUM}) `;
+        const remainingNum = parseInt(remainingQuizzes) + 1;
+        const remaining = `(${remainingNum}/${process.env.REACT_APP_QUIZ_NUM}) `;
         const question = quiz?.question;
         const answer = quiz?.answer ? quiz.answer : "퀴즈 시작 전";
         let hint;
