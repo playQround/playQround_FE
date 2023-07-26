@@ -29,7 +29,7 @@ const LoginWindow = ({ ViewLogin, ViewSignUp }) => {
             })
             .catch((error) => {
                 event.preventDefault();
-                alert(error);
+                alert(error.response.data.message);
             });
     };
 
