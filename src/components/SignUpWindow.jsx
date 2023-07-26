@@ -27,12 +27,13 @@ const SignUpWindow = ({ ViewSignUp }) => {
         };
         API.signUp(data)
             .then((response) => {
-                console.log(data);
                 alert(response.data.message);
                 signIn(data.userEmail, data.userPassword);
             })
-
-            .catch((error) => alert(`error : ${error}`));
+            .catch((error) => {
+                console.log(error);
+                alert(`${error.response.data.message}`);
+            });
     };
 
     const signIn = (userEmail, userPassword) => {
