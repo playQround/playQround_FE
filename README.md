@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+## PlayQround FrontEnd
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![PlayQround Logo](https://github.com/playQround/playQround_FE/blob/main/public/PlayQRound.png)
 
-## Available Scripts
+PlayQround는 실시간으로 퀴즈를 맞추는 게임 플레이 사이트입니다. 소켓통신과 WebRTC, 기초적인 React를 이용해 구현되었습니다.
 
-In the project directory, you can run:
+### 시작하기 전에
 
-### `npm start`
+이 프로젝트는 아래 의존성이 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React.js
+- Axios
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 시작하기
 
-### `npm test`
+이 프로젝트를 시작하는 방법은 아래와 같습니다:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. 프로젝트를 클론합니다:
 
-### `npm run build`
+```bash
+git clone https://github.com/your-username/playqround.git
+cd playqround
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. 필요한 모듈을 설치합니다:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. 프로젝트를 실행합니다:
 
-### `npm run eject`
+```bash
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+프로젝트가 정상적으로 실행되면, 브라우저에서 `http://localhost:4000`으로 접속해서 결과를 확인할 수 있습니다.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 주요 UI 구성
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+메인 페이지
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![Main page](https://github.com/playQround/playQround_FE/assets/128202933/a8921a33-a724-4685-bf34-023726ee40dd)
 
-## Learn More
+로그인/회원가입 팝업
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![Sign in](https://github.com/playQround/playQround_FE/assets/128202933/4cc40398-cde5-48de-b057-75835244fd2a)
+![Sign up](https://github.com/playQround/playQround_FE/assets/128202933/aaa0b3e3-3f04-4129-b4aa-aa49f916eb57)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+로그인 유저 정보 표시와 서버 순위 표시
 
-### Code Splitting
+![login-rank](https://github.com/playQround/playQround_FE/assets/128202933/16eeb1ec-650e-4425-8955-d17785658f68)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+방 생성 팝업
 
-### Analyzing the Bundle Size
+![create room](https://github.com/playQround/playQround_FE/assets/128202933/1c6d6528-9f20-4014-9e9b-fce7eaf3baa8)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+게임 방 페이지
 
-### Making a Progressive Web App
+![chat room](https://github.com/playQround/playQround_FE/assets/128202933/8cfb8aa2-03dc-46e3-85a5-401ce1596a51)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+게임 중 화면
 
-### Advanced Configuration
+![In game](https://github.com/playQround/playQround_FE/assets/128202933/09b1dcfe-0bda-4e65-a202-ba8235f92e25)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
